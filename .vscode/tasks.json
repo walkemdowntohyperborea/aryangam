@@ -1,0 +1,66 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "nuget restore",
+      "type": "shell",
+      "command": "nuget",
+      "args": [
+        "restore"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "build Release",
+      "type": "shell",
+      "command": "msbuild",
+      "args": [
+        "Amalgam.sln",
+        "/p:Platform=x64",
+        "/p:Configuration=Release"
+      ],
+      "problemMatcher": "$msCompile",
+      "dependsOn": "nuget restore",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "build ReleaseAVX2",
+      "type": "shell",
+      "command": "msbuild",
+      "args": [
+        "Amalgam.sln",
+        "/p:Platform=x64",
+        "/p:Configuration=ReleaseAVX2"
+      ],
+      "problemMatcher": "$msCompile",
+      "dependsOn": "nuget restore"
+    },
+    {
+      "label": "build ReleaseFreetype",
+      "type": "shell",
+      "command": "msbuild",
+      "args": [
+        "Amalgam.sln",
+        "/p:Platform=x64",
+        "/p:Configuration=ReleaseFreetype"
+      ],
+      "problemMatcher": "$msCompile",
+      "dependsOn": "nuget restore"
+    },
+    {
+      "label": "build ReleaseFreetypeAVX2",
+      "type": "shell",
+      "command": "msbuild",
+      "args": [
+        "Amalgam.sln",
+        "/p:Platform=x64",
+        "/p:Configuration=ReleaseFreetypeAVX2"
+      ],
+      "problemMatcher": "$msCompile",
+      "dependsOn": "nuget restore"
+    }
+  ]
+}
