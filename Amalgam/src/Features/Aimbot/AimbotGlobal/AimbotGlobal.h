@@ -1,0 +1,42 @@
+#pragma once
+#include "../../../SDK/SDK.h"
+#include "../../Backtrack/Backtrack.h"
+
+Enum(Target, Unknown, Player, Sentry, Dispenser, Teleporter, Sticky, NPC, Bomb)
+
+struct Target_t
+{
+	CBaseEntity* m_pEntity = nullptr;
+	int m_iTargetType = TargetEnum::Unknown;
+	Vec3 m_vPos = {};
+	Vec3 m_vAngleTo = {};
+	float m_flFOVTo = std::numeric_limits<float>::max();
+	float m_flDistTo = std::numeric_limits<float>::max();
+	int m_nPriority = 0;
+	int m_nAimedHitbox = -1;
+
+	TickRecord* m_pRecord = nullptr;
+	bool m_bBacktrack = false;
+
+};
+
+class CAimbotGlobal
+{
+public:
+	void SortTargets(std::vector<Target_t>&, int iMethod);
+	void SortPriority(std::vector<Target_t>&);
+
+	bool PlayerBoneInFOV(CTFPlayer* pTarget, Vec3 vLocalPos, Vec3 vLocalAngles, float& flFOVTo, Vec3& vPos, Vec3& vAngleTo, float aimFOV, int iHitboxes = Vars::Aimbot::Hitscan::HitboxesEnum::Head | Vars::Aimbot::Hitscan::HitboxesEnum::Body | Vars::Aimbot::Hitscan::HitboxesEnum::Pelvis | Vars::Aimbot::Hitscan::HitboxesEnum::Arms | Vars::Aimbot::Hitscan::HitboxesEnum::Legs);
+	bool IsHitboxValid(CBaseEntity* pEntity, int nHitbox, int iHitboxes = Vars::Aimbot::Hitscan::HitboxesEnum::Head | Vars::Aimbot::Hitscan::HitboxesEnum::Body | Vars::Aimbot::Hitscan::HitboxesEnum::Pelvis | Vars::Aimbot::Hitscan::HitboxesEnum::Arms | Vars::Aimbot::Hitscan::HitboxesEnum::Legs);
+	bool ShouldMultipoint(CBaseEntity* pEntity = nullptr, int nHitbox = -1, int iHitboxes = Vars::Aimbot::Hitscan::HitboxesEnum::Head | Vars::Aimbot::Hitscan::HitboxesEnum::Body | Vars::Aimbot::Hitscan::HitboxesEnum::Pelvis | Vars::Aimbot::Hitscan::HitboxesEnum::Arms | Vars::Aimbot::Hitscan::HitboxesEnum::Legs);
+
+	bool ShouldIgnore(CBaseEntity* pTarget, CTFPlayer* pLocal, CTFWeaponBase* pWeapon, bool bAutoDetonate = false);
+	int GetPriority(int iIndex);
+	bool FriendlyFire();
+
+	bool ShouldAim();
+	bool ShouldHoldAttack(CTFWeaponBase* pWeapon);
+	bool ValidBomb(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CBaseEntity* pBomb, bool bCheckWeaponType = true);
+};
+
+ADD_FEATURE(CAimbotGlobal, AimbotGlobal);
