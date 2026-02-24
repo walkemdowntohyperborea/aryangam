@@ -606,6 +606,9 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 	if (!pWeapon || !pLocal->IsAlive() || pLocal->IsAGhost() || pWeapon->GetWeaponID() == TF_WEAPON_PASSTIME_GUN)
 		return;
 
+	static const auto tf_weapon_criticals = U::ConVars.FindVar("tf_weapon_criticals");
+	static const auto tf_weapon_criticals_bucket_cap = U::ConVars.FindVar("tf_weapon_criticals_bucket_cap");
+
 	int x = Vars::Menu::CritsDisplay.Value.x;
 	int y = Vars::Menu::CritsDisplay.Value.y + 8;
 	const auto& fFont = H::Fonts.GetFont(FONT_INDICATORS);
@@ -648,7 +651,6 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 		else
 		{
 			H::Draw.StringOutlined(fIndicatorFont, x, y += nTall, m_iAvailableCrits == 0 ? tRed : tGreen, tOutline, align, std::format("{}/{} crits", m_iAvailableCrits, m_iPotentialCrits).c_str());
-			static const auto tf_weapon_criticals_bucket_cap = U::ConVars.FindVar("tf_weapon_criticals_bucket_cap");
 			if (pWeapon->m_flCritTokenBucket() == tf_weapon_criticals_bucket_cap->GetInt())
 			{
 				constexpr Color_t tPink = { 221, 146, 218, 255 };
@@ -669,7 +671,7 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 	case Vars::Menu::CritDisplayStyleEnum::Cathook:
 	{
 		bool shouldDrawBar = true;
-		if (U::ConVars.FindVar("tf_weapon_criticals")->GetInt() == 0)
+		if (tf_weapon_criticals->GetInt() == 0)
 			shouldDrawBar = false;
 
 		// draw info strings in corner
@@ -725,7 +727,7 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 
 		if (shouldDrawBar)
 		{
-			const float flBucketCap = U::ConVars.FindVar("tf_weapon_criticals_bucket_cap")->GetFloat();
+			const float flBucketCap = tf_weapon_criticals_bucket_cap->GetFloat();
 			const float flBucketPercentage = pWeapon->m_flCritTokenBucket() / flBucketCap;
 			float flBucketPercentagePostCrit = pWeapon->m_flCritTokenBucket();
 
@@ -834,7 +836,7 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 		constexpr Color_t tWhite = Color_t(255, 255, 255, 255);
 		constexpr Color_t tBlack = Color_t(0, 0, 0, 255);
 
-		if (U::ConVars.FindVar("tf_weapon_criticals")->GetInt() == 0)
+		if (tf_weapon_criticals->GetInt() == 0)
 		{
 			H::Draw.String(fFont, x, y, tRed, ALIGN_CENTER, "CRITS DISABLED");
 			return;
@@ -902,7 +904,7 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 
 		x -= barBGSizeX / 2.f; y += barBGSizeY / 2.f + 8;
 
-		if (U::ConVars.FindVar("tf_weapon_criticals")->GetInt() == 0 || !WeaponCanCrit(pWeapon))
+		if (tf_weapon_criticals->GetInt() == 0 || !WeaponCanCrit(pWeapon))
 			return;
 
 		// draw background & outline
@@ -923,8 +925,10 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 		if (m_bCritBanned && iSlot != SLOT_MELEE || !m_iAvailableCrits)
 			tBarColor = { 255, 0, 0, 255 };
 
-		const float flBucketCap = U::ConVars.FindVar("tf_weapon_criticals_bucket_cap")->GetFloat();
-		const float flBucketBottom = U::ConVars.FindVar("tf_weapon_criticals_bucket_bottom")->GetFloat();
+		const float flBucketCap = tf_weapon_criticals_bucket_cap->GetFloat();
+
+		static const auto tf_weapon_criticals_bucket_bottom = U::ConVars.FindVar("tf_weapon_criticals_bucket_bottom");
+		const float flBucketBottom = tf_weapon_criticals_bucket_bottom->GetFloat();
 
 		// calculate damage our crit will do
 		float flDamage = pWeapon->GetDamage();
@@ -959,7 +963,7 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 	}
 	case Vars::Menu::CritDisplayStyleEnum::Ateris:
 	{
-		if (U::ConVars.FindVar("tf_weapon_criticals")->GetInt() == 0 || !WeaponCanCrit(pWeapon))
+		if (tf_weapon_criticals->GetInt() == 0 || !WeaponCanCrit(pWeapon))
 			return;
 
 		const auto pWeapon = H::Entities.GetWeapon();
@@ -1060,7 +1064,7 @@ void CCritHack::Draw(CTFPlayer* pLocal)
 	{
 		x -= H::Draw.Scale(45);
 
-		if (!WeaponCanCrit(pWeapon) || U::ConVars.FindVar("tf_weapon_criticals")->GetInt() == 0)
+		if (!WeaponCanCrit(pWeapon) || tf_weapon_criticals->GetInt() == 0)
 		{
 			H::Draw.StringOutlined(fFont, x, y, Vars::Colors::IndicatorTextBad.Value, Vars::Menu::Theme::Background.Value, ALIGN_LEFT, "Weapon can't crit");
 			return;
