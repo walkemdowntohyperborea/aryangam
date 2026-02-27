@@ -253,6 +253,7 @@ void CMenu::MenuAimbot(int iTab)
 						FSlider(Vars::Aimbot::Hitscan::PeekAmount);
 						FSlider(Vars::Aimbot::Hitscan::BoneSizeSubtract);
 						FSlider(Vars::Aimbot::Hitscan::BoneSizeMinimumScale);
+						FToggle(Vars::Aimbot::Hitscan::CollatOnly);
 					} EndSection();
 				}
 				if (Section("Projectile"))

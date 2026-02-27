@@ -2,6 +2,7 @@
 #include "../../Visuals/Groups/Groups.h"
 #include "../../ImGui/Menu/Menu.h"
 
+// cr: seowned de for arc code and nitro for actual indicators look
 
 static inline void Arc(int x, int y, int radius, float thickness, float start, float end, Color_t clr)
 {

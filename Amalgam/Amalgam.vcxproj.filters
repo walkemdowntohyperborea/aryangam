@@ -641,6 +641,8 @@
     <ClInclude Include="src\SDK\Definitions\Interfaces\CHLTVCamera.h" />
     <ClInclude Include="src\SDK\Definitions\Interfaces\CThirdPersonManager.h" />
     <ClInclude Include="src\Features\Players\BanChecker\BanChecker.h" />
+    <ClInclude Include="src\SDK\Definitions\Misc\CBulletPenetrateEnum.h" />
+    <ClInclude Include="src\SDK\Definitions\Main\UtlSortVector.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

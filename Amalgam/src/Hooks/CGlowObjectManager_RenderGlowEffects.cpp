@@ -67,6 +67,8 @@ static inline void DestroyGlowObject(std::unordered_map<int, CGlowObject*>::iter
 MAKE_HOOK(CGlowObjectManager_RenderGlowEffects, S::CGlowObjectManager_RenderGlowEffects(), void,
     CGlowObjectManager* rcx, const CViewSetup* pSetup, int nSplitScreenSlot)
 {
+    DEBUG_RETURN(CGlowObjectManager_RenderGlowEffects, rcx, pSetup, nSplitScreenSlot);
+
     if (!rcx)
         return CALL_ORIGINAL(rcx, pSetup, nSplitScreenSlot);
     
@@ -107,7 +109,7 @@ MAKE_HOOK(CGlowObjectManager_RenderGlowEffects, S::CGlowObjectManager_RenderGlow
 
         activeIndices.insert(iIndex);
 
-        if (pGroup->m_tGlow.Stencil || pGroup->m_tGlow.Blur)
+        if (pGroup->m_tGlow())
         {
             Color_t tColor;
 

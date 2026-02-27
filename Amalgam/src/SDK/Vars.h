@@ -354,6 +354,7 @@ namespace Vars
 			CVar(PeekAmount, "Peek amount", 1, NOSAVE | DEBUGVAR, 0, 5);
 			CVar(BoneSizeSubtract, "Bone size subtract", 1.f, NOSAVE | DEBUGVAR | SLIDER_MIN, 0.f, 4.f, 0.25f);
 			CVar(BoneSizeMinimumScale, "Bone size minimum scale", 1.f, NOSAVE | DEBUGVAR | SLIDER_CLAMP, 0.f, 1.f, 0.1f);
+			CVar(CollatOnly, "Collateral shot only", false, DEBUGVAR);
 		SUBNAMESPACE_END(HITSCAN);
 
 		SUBNAMESPACE_BEGIN(Projectile)

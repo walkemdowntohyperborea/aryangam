@@ -107,6 +107,8 @@ void CCore::Load()
 
 	Sleep(500); // configs take a bit of time to load lol
 	H::Fonts.RemakeFonts();
+
+	//U::NetVars.DumpTables(true);
 }
 
 void CCore::Loop()

@@ -156,7 +156,7 @@ static void dumpRecvTable(RecvTable* const rt, const std::string& network_name, 
 		if (prop_name.starts_with("m_h"))
 			prop_type = "EHANDLE";
 
-		if (prop_name.starts_with("m_b"))
+		if (prop_name.starts_with("m_b") && prop_type != "unknown")
 			prop_type = "bool";
 
 		if (prop_name.front() == '\"' && prop_name.back() == '\"') 
@@ -167,7 +167,7 @@ static void dumpRecvTable(RecvTable* const rt, const std::string& network_name, 
 
 		static std::unordered_map<std::string, std::unordered_set<std::string>> m_written_netvars{};
 		if (file && !m_written_netvars[network_name].contains(prop_name))
-			*file << std::format("\tNETVAR({}, {}, \"{}\"); // + {}\n", prop_type, prop_name, prop_table_name, offset + p->GetOffset());
+			*file << std::format("\tNETVAR({}, {}, \"{}\", \"{}\");\n", prop_name, prop_type, prop_table_name, prop_name);
 
 		m_written_netvars[network_name].insert(prop_name);
 	}

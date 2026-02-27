@@ -8,6 +8,8 @@
 #include "../../Visuals/SpectatorList/SpectatorList.h"
 #include "../../Simulation/MovementSimulation/MovementSimulation.h"
 
+#include "../../../SDK/Definitions/Misc/CBulletPenetrateEnum.h"
+
 std::vector<Target_t> CAimbotHitscan::GetTargets(CTFPlayer* pLocal, CTFWeaponBase* pWeapon)
 {
 	std::vector<Target_t> vTargets;
@@ -663,6 +665,36 @@ bool CAimbotHitscan::ShouldFire(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUser
 
 			return false;
 		}
+		}
+	}
+
+	if (Vars::Aimbot::Hitscan::CollatOnly.Value && SDK::AttribHookValue(0, "sniper_penetrate_players_when_charged", pWeapon) > 0)
+	{
+		auto pSniperRifle = pWeapon->As<CTFSniperRifle>();
+		if (pSniperRifle->m_flChargedDamage() != 150.f)
+			return false;
+
+		trace_t tr;
+		CTraceFilterHitscan filter; filter.pSkip = pLocal;
+		SDK::Trace(m_vEyePos, tTarget.m_vPos, MASK_SHOT, &filter, &tr);
+		if (tr.m_pEnt)
+		{
+			Ray_t ray; ray.Init(m_vEyePos, tTarget.m_vPos, Vec3(-40.f, -40.f, -40.f), Vec3(40.f, 40.f, 40.f));
+			CBulletPenetrateEnum ePenetrate(m_vEyePos, tTarget.m_vPos, pLocal, TF_DMG_CUSTOM_PENETRATE_MY_TEAM, true);
+			I::EngineTrace->EnumerateEntities(ray, false, &ePenetrate);
+
+			bool bDidPenetrate = false;
+			for (int i = 0; i < ePenetrate.m_Targets.Count(); i++)
+			{
+				CBaseEntity* pTarget = ePenetrate.m_Targets[i].pTarget;
+				if (!pTarget || pTarget->GetClassID() == ETFClassID::CWorld)
+					continue;
+
+				bDidPenetrate = pTarget->m_iTeamNum() == pLocal->m_iTeamNum();
+				if (bDidPenetrate)
+					break;
+			}
+			return bDidPenetrate;
 		}
 	}
 
