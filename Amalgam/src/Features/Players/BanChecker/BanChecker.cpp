@@ -11,11 +11,8 @@
 
 #pragma comment(lib, "winhttp.lib")
 
-void CBanChecker::Initialize(const std::string& sAPIKey)
+void CBanChecker::Initialize()
 {
-    if (!sAPIKey.empty())
-        m_sAPIKey = sAPIKey;
-
     m_bRunning = true;
     m_tLastRequest = std::chrono::steady_clock::now() - std::chrono::milliseconds(m_iRequestDelay);
     m_tLastSteamRequest = std::chrono::steady_clock::now() - std::chrono::milliseconds(m_iSteamRequestDelay);
@@ -169,7 +166,7 @@ CBanChecker::FetchResult_t CBanChecker::FetchBanData(const std::vector<uint32_t>
     std::wstring wsPath(sPath.begin(), sPath.end());
     std::string sResponse;
 
-    HINTERNET hSession = WinHttpOpen(L"amalgam/1.0",
+    HINTERNET hSession = WinHttpOpen(L"RAPEGAM/1.0",
         WINHTTP_ACCESS_TYPE_DEFAULT_PROXY,
         WINHTTP_NO_PROXY_NAME,
         WINHTTP_NO_PROXY_BYPASS, 0);
@@ -268,7 +265,7 @@ CBanChecker::FetchResult_t CBanChecker::FetchSteamBanData(const std::vector<uint
     std::wstring wsPath(sPath.begin(), sPath.end());
     std::string sResponse;
 
-    HINTERNET hSession = WinHttpOpen(L"pissgram/1.0",
+    HINTERNET hSession = WinHttpOpen(L"RAPEGAM/1.0",
         WINHTTP_ACCESS_TYPE_DEFAULT_PROXY,
         WINHTTP_NO_PROXY_NAME,
         WINHTTP_NO_PROXY_BYPASS, 0);

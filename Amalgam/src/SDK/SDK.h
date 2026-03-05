@@ -11,7 +11,6 @@
 #include "Definitions/Classes.h"
 #include "../Utils/Signatures/Signatures.h"
 #include "../Utils/Interfaces/Interfaces.h"
-#include "../Utils/Hooks/Hooks.h"
 #include "../Utils/Memory/Memory.h"
 #include "../Utils/ConVars/ConVars.h"
 #include "../Utils/KeyHandler/KeyHandler.h"

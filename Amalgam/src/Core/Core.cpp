@@ -9,8 +9,10 @@
 #include "../Features/EnginePrediction/EnginePrediction.h"
 #include "../Features/Visuals/Materials/Materials.h"
 #include "../Features/Visuals/Visuals.h"
+#include "../Features/Players/BanChecker/BanChecker.h"
 #include "../Features/Players/PlayerUtils.h"
 #include "../SDK/Events/Events.h"
+#include "../Hooks/Hooks.h"
 #include <Psapi.h>
 
 static inline std::string GetProcessName(DWORD dwProcessID)
@@ -102,6 +104,8 @@ void CCore::Load()
 	F::CheaterDetection.InitList();
 	F::BanChecker.Initialize();
 
+	F::BanChecker.Initialize();
+
 	F::Configs.LoadVisual(F::Configs.m_sCurrentVisuals, false);
 	F::Configs.LoadConfig(F::Configs.m_sCurrentConfig, false);
 
@@ -134,6 +138,7 @@ void CCore::Unload()
 	}
 
 	G::Unload = true;
+	Sleep(100);
 	m_bFailed2 = !U::Hooks.Unload() || m_bFailed2;
 	U::BytePatches.Unload();
 	H::Events.Unload();
@@ -156,6 +161,7 @@ void CCore::Unload()
 	F::EnginePrediction.Unload();
 	U::ConVars.Restore();
 	F::Materials.UnloadMaterials();
+	F::BanChecker.Shutdown();
 
 	if (m_bFailed2)
 	{

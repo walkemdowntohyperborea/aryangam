@@ -309,13 +309,6 @@ void CCheaterDetection::ReportDamage(IGameEvent* pEvent)
 		TrackCritEvent(pEntity, pWeapon, pEvent->GetBool("crit"));
 }
 
-static size_t WriteCallback(void* pContents, size_t nSize, size_t nBytes, void* pUserp)
-{
-	size_t nTotalSize = nSize * nBytes;
-	((std::string*)pUserp)->append((char*)pContents, nTotalSize);
-	return nTotalSize;
-}
-
 void CCheaterDetection::InitList()
 {
 	mCheaters = {

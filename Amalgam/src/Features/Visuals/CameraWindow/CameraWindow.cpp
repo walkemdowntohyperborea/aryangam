@@ -1,6 +1,7 @@
 #include "CameraWindow.h"
 
 #include "../../Visuals/Materials/Materials.h"
+#include "../../../Hooks/Hooks.h"
 
 // Draws camera to the screen
 void CCameraWindow::Draw()
@@ -56,8 +57,7 @@ void CCameraWindow::RenderCustomView(void* ecx, const CViewSetup& pViewSetup, IT
 	pRenderContext->PushRenderTargetAndViewport();
 	pRenderContext->SetRenderTarget(pTexture);
 
-	static auto CViewRender_RenderView = U::Hooks.m_mHooks["CViewRender_RenderView"];
-	CViewRender_RenderView->Call<void>(ecx, pViewSetup, VIEW_CLEAR_COLOR | VIEW_CLEAR_DEPTH, RENDERVIEW_UNSPECIFIED);
+	U::Hooks.m_CViewRender_RenderView.fastcall<void>(ecx, pViewSetup, VIEW_CLEAR_COLOR | VIEW_CLEAR_DEPTH, RENDERVIEW_UNSPECIFIED);
 
 	pRenderContext->PopRenderTargetAndViewport();
 	pRenderContext->Release();

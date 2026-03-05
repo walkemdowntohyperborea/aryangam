@@ -4,6 +4,7 @@
 #include "../Materials/Materials.h"
 #include "../FakeAngle/FakeAngle.h"
 #include "../../Backtrack/Backtrack.h"
+#include "../../../Hooks/Hooks.h"
 
 void CChams::DrawModel(CBaseEntity* pEntity, Chams_t& tChams, IMatRenderContext* pRenderContext, bool bTwoModels)
 {
@@ -186,8 +187,7 @@ void CChams::RenderBacktrack(const DrawModelState_t& pState, const ModelRenderIn
 
 			float flOriginalBlend = I::RenderView->GetBlend();
 			I::RenderView->SetBlend(flBlend * flOriginalBlend);
-			static auto IVModelRender_DrawModelExecute = U::Hooks.m_mHooks["IVModelRender_DrawModelExecute"];
-			IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
+			U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
 			I::RenderView->SetBlend(flOriginalBlend);
 		};
 	if (!bDrawLast && !bDrawFirst)
@@ -226,8 +226,7 @@ void CChams::RenderFakeAngle(const DrawModelState_t& pState, const ModelRenderIn
 
 	//pRenderContext->DepthRange(0.f, Vars::Chams::FakeAngle::IgnoreZ.Value ? 0.2f : 1.f);
 
-	static auto IVModelRender_DrawModelExecute = U::Hooks.m_mHooks["IVModelRender_DrawModelExecute"];
-	IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, F::FakeAngle.aBones);
+	U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, F::FakeAngle.aBones);
 
 	//pRenderContext->DepthRange(0.f, 1.f);
 }
@@ -235,8 +234,7 @@ void CChams::RenderHandler(const DrawModelState_t& pState, const ModelRenderInfo
 {
 	if (!m_iFlags)
 	{
-		static auto IVModelRender_DrawModelExecute = U::Hooks.m_mHooks["IVModelRender_DrawModelExecute"];
-		IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
+		U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
 	}
 	else
 	{
@@ -276,8 +274,7 @@ bool CChams::RenderViewmodel(void* ecx, int flags, int* iReturn)
 		if (pMaterial && pMaterial->m_bInvertCull)
 			pRenderContext->CullMode(G::FlipViewmodels ? MATERIAL_CULLMODE_CCW : MATERIAL_CULLMODE_CW);
 
-		static auto CBaseAnimating_InternalDrawModel = U::Hooks.m_mHooks["CBaseAnimating_InternalDrawModel"];
-		*iReturn = CBaseAnimating_InternalDrawModel->Call<int>(ecx, flags);
+		*iReturn = U::Hooks.m_CBaseAnimating_InternalDrawModel.fastcall<int>(ecx, flags);
 
 		if (pMaterial && pMaterial->m_bInvertCull)
 			pRenderContext->CullMode(G::FlipViewmodels ? MATERIAL_CULLMODE_CW : MATERIAL_CULLMODE_CCW);
@@ -318,8 +315,7 @@ bool CChams::RenderViewmodel(const DrawModelState_t& pState, const ModelRenderIn
 		if (pMaterial && pMaterial->m_bInvertCull)
 			pRenderContext->CullMode(G::FlipViewmodels ? MATERIAL_CULLMODE_CCW : MATERIAL_CULLMODE_CW);
 
-		static auto IVModelRender_DrawModelExecute = U::Hooks.m_mHooks["IVModelRender_DrawModelExecute"];
-		IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
+		U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
 
 		if (pMaterial && pMaterial->m_bInvertCull)
 			pRenderContext->CullMode(G::FlipViewmodels ? MATERIAL_CULLMODE_CW : MATERIAL_CULLMODE_CCW);
