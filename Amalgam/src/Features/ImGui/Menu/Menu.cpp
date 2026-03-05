@@ -184,6 +184,7 @@ void CMenu::MenuAimbot(int iTab)
 					FToggle(Vars::CritHack::CritVisualEffects, FToggleEnum::Right);
 					FToggle(Vars::Aimbot::General::NoSpread, FToggleEnum::Left);
 					FToggle(Vars::Aimbot::General::AutoShootSpells, FToggleEnum::Right, &Hovered); FTooltip("If enabled, aimbot will not do anything unless spell will hit someone", Hovered);
+					FToggle(Vars::Aimbot::General::PreferMedics, FToggleEnum::Left);
 				} EndSection();
 				if (Vars::Debug::Options.Value)
 				{
@@ -1223,8 +1224,8 @@ void CMenu::MenuVisuals(int iTab)
 						FDropdown(Vars::Menu::TickDisplayStyle, FDropdownEnum::Left, -20);
 					}
 					PopTransparent();
-					FColorPicker(Vars::Colors::IndicatorGradientStart, FColorPickerEnum::SameLine, {}, { H::Draw.Scale(10), H::Draw.Scale(40) });
-					FColorPicker(Vars::Colors::IndicatorGradientEnd, FColorPickerEnum::SameLine, {}, { H::Draw.Scale(10), H::Draw.Scale(40) });
+					FColorPicker(Vars::Colors::PrimaryBarColor, FColorPickerEnum::SameLine, {}, { H::Draw.Scale(10), H::Draw.Scale(40) });
+					FColorPicker(Vars::Colors::SecondaryBarColor, FColorPickerEnum::SameLine, {}, { H::Draw.Scale(10), H::Draw.Scale(40) });
 
 					FDropdown(Vars::Menu::CritDisplayStyle, FDropdownEnum::Right);
 
@@ -1252,13 +1253,6 @@ void CMenu::MenuVisuals(int iTab)
 						FToggle(Vars::Menu::SyncedTicks, FToggleEnum::Right);
 					}
 					PopTransparent();
-					if (FButton("THE DING BUTTON"))
-					{
-						if(SDK::StdRandomInt(1,7) != 1)
-							I::MatSystemSurface->PlaySound("ui/mm_medal_click.wav");
-						else
-							I::MatSystemSurface->PlaySound("ui/mm_medal_click_rare.wav");
-					}
 				} EndSection();
 			}
 		} EndTable();

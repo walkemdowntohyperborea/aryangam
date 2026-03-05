@@ -293,8 +293,8 @@ namespace Vars
 		CVar(BoundHitboxFace, "Bound hitbox face color", Color_t(255, 255, 255, 0), VISUAL);
 		CVar(BoundHitboxFaceIgnoreZ, "Bound hitbox face ignore Z color", Color_t(255, 255, 255, 0), VISUAL);
 
-		CVar(IndicatorGradientStart, "RijiN gradient start", Color_t(255, 255, 255, 255), VISUAL);
-		CVar(IndicatorGradientEnd, "RijiN gradient end", Color_t(255, 255, 255, 255), VISUAL);
+		CVar(PrimaryBarColor, "Primary bar color", Color_t(255, 255, 255, 255), VISUAL);
+		CVar(SecondaryBarColor, "Secondary bar color", Color_t(255, 255, 255, 255), VISUAL);
 
 		CVar(SpellFootstep, "Spell footstep color", Color_t(255, 255, 255, 255), VISUAL);
 	NAMESPACE_END(Colors);
@@ -325,6 +325,7 @@ namespace Vars
 			CVar(AutoShootSpells, "Auto shoot spells", false);
 			CVar(FOVCircle, "FOV Circle", true, VISUAL);
 			CVar(NoSpread, "No spread", false);
+			CVar(PreferMedics, "Prefer medics", true);
 			
 			CVarEnum(AimHoldsFire, "Aim holds fire", 2, NOSAVE | DEBUGVAR, nullptr,
 				VA_LIST("False", "Minigun only", "Always"),

@@ -2,6 +2,7 @@
 
 #include "../SDK/SDK.h"
 #include "../BytePatches/BytePatches.h"
+#include "../Features/Players/BanChecker/BanChecker.h"
 #include "../Features/CheaterDetection/CheaterDetection.h"
 #include "../Features/Configs/Configs.h"
 #include "../Features/ImGui/Menu/Menu.h"
@@ -101,6 +102,7 @@ void CCore::Load()
 	F::Materials.LoadMaterials();
 	U::ConVars.Unlock();
 	F::CheaterDetection.InitList();
+	F::BanChecker.Initialize();
 
 	F::BanChecker.Initialize();
 
