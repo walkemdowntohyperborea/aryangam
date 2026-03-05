@@ -23,9 +23,8 @@ void CAimbotGlobal::SortPriority(std::vector<Target_t>& vTargets)
 {	// Sort by priority
 	std::sort(vTargets.begin(), vTargets.end(), [&](const Target_t& a, const Target_t& b) -> bool
 		{
-			if (Vars::Aimbot::General::PreferMedics.Value) {
-				return (a.m_pEntity->IsPlayer() && (a.m_pEntity->As<CTFPlayer>()->m_iClass() == TF_CLASS_MEDIC));
-			}
+			if (Vars::Aimbot::General::PreferMedics.Value)
+				return ((a.m_pEntity->IsPlayer() && a.m_pEntity->As<CTFPlayer>()->m_iClass() == TF_CLASS_MEDIC) && (b.m_pEntity->IsPlayer() && b.m_pEntity->As<CTFPlayer>()->m_iClass() != TF_CLASS_MEDIC));
 			return a.m_nPriority > b.m_nPriority;
 		});
 }
