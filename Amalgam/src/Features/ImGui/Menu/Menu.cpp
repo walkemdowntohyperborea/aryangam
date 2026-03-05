@@ -184,6 +184,7 @@ void CMenu::MenuAimbot(int iTab)
 					FToggle(Vars::CritHack::CritVisualEffects, FToggleEnum::Right);
 					FToggle(Vars::Aimbot::General::NoSpread, FToggleEnum::Left);
 					FToggle(Vars::Aimbot::General::AutoShootSpells, FToggleEnum::Right, &Hovered); FTooltip("If enabled, aimbot will not do anything unless spell will hit someone", Hovered);
+					FToggle(Vars::Aimbot::General::PreferMedics, FToggleEnum::Left);
 				} EndSection();
 				if (Vars::Debug::Options.Value)
 				{
