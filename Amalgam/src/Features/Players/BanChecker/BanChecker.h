@@ -37,7 +37,7 @@ public:
     std::unordered_map<uint32_t, BanInfo_t> m_mBanCache;
     std::mutex m_tMutex;
 
-    void Initialize(const std::string& sAPIKey = "");
+    void Initialize();
     void Shutdown();
     void QueueCheck(uint32_t uAccountID);
     BanInfo_t GetBanInfo(uint32_t uAccountID);
