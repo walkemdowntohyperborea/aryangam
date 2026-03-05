@@ -11,7 +11,6 @@
 #include "../../Features/Output/Output.h"
 #include "../../Features/Resolver/Resolver.h"
 #include "../../Features/Visuals/Visuals.h"
-#include "../../Hooks/COPRenderSprites_Render.h"
 
 bool CEventListener::Initialize()
 {

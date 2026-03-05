@@ -5,6 +5,7 @@
 #include "../../Spectate/Spectate.h"
 #include "../../Simulation/MovementSimulation/MovementSimulation.h"
 #include "../../Simulation/ProjectileSimulation/ProjectileSimulation.h"
+#include "../../../Hooks/Hooks.h"
 #include "WeaponNames/WeaponNames.h"
 
 MAKE_SIGNATURE(CTFPlayerSharedUtils_GetEconItemViewByLoadoutSlot, "client.dll", "48 89 6C 24 ? 56 41 54 41 55 41 56 41 57 48 83 EC", 0x0);
@@ -282,8 +283,7 @@ static inline void StorePlayer(CTFPlayer* pPlayer, CTFPlayer* pLocal, Group_t* p
 			if (pPlayer->InCond(TF_COND_POWERUPMODE_DOMINANT))
 				tCache.m_vConditionText.emplace_back(ALIGN_TOPRIGHT, "DOMINANT", Vars::Colors::IndicatorTextBad.Value, pGroup->m_tOutlineColor);
 
-			static auto TF_IsHolidayActive = U::Hooks.m_mHooks["TF_IsHolidayActive"];
-			if (TF_IsHolidayActive->Call<bool>(kHoliday_Halloween))
+			if (U::Hooks.m_TF_IsHolidayActive.fastcall<bool>(kHoliday_Halloween))
 			{
 				static const char* kSpellNames[] = {
 				"FIREBALL", "BATS", "HEAL", "PUMPKINS", "JUMP", "STEALTH", "TELEPORT", "LIGHTNING",
@@ -902,7 +902,9 @@ void CESP::DrawPlayers()
 				H::Draw.StringOutlined(fSmallFont, r, y + h, tColor, tOutline, ALIGN_TOPLEFT, sText.c_str());
 				break;
 			case ALIGN_BOTTOMLEFT: // special case for health text since its used nowhere else
-				H::Draw.StringOutlined(fSmallFont, l + H::Draw.Scale(5, Scale_Round), y - H::Draw.Scale(4) + h - h * std::min(tCache.m_flHealth, 1.f), tColor, tOutline, ALIGN_TOPRIGHT, sText.c_str());
+				int wide, tall = 0;
+				I::MatSystemSurface->GetTextSize(fSmallFont.m_dwFont, SDK::ConvertUtf8ToWide(sText).c_str(), wide, tall);
+				H::Draw.StringOutlined(fSmallFont, x - H::Draw.Scale(4) - H::Draw.Scale(2, Scale_Round) - lOffset - (wide / 2.f), y - H::Draw.Scale(4) + h - h * std::min(tCache.m_flHealth, 1.f), tColor, tOutline, ALIGN_TOPRIGHT, sText.c_str());
 				break;
 			}
 		}

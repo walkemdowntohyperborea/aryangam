@@ -36,6 +36,57 @@ struct MoveData
 	Vec3 m_vOrigin = {};
 };
 
+struct StrafeDataState
+{
+	int iChanges = 0;
+	int iStart = 0;
+	int iStaticSign = 0;
+	bool bStaticZero = false;
+};
+
+class CScopedBounds
+{
+public:
+	CScopedBounds(CTFPlayer* pPlayer) : m_pPlayer(pPlayer)
+	{
+		if (!m_pPlayer || m_pPlayer->entindex() == I::EngineClient->GetLocalPlayer())
+			return;
+
+		if (auto pGameRules = I::TFGameRules())
+		{
+			if (auto pViewVectors = pGameRules->GetViewVectors())
+			{
+				m_pViewVectors = pViewVectors;
+				m_vHullMin = pViewVectors->m_vHullMin;
+				m_vHullMax = pViewVectors->m_vHullMax;
+				m_vDuckHullMin = pViewVectors->m_vDuckHullMin;
+				m_vDuckHullMax = pViewVectors->m_vDuckHullMax;
+
+				pViewVectors->m_vHullMin = Vec3(-24, -24, 0) + PLAYER_ORIGIN_COMPRESSION;
+				pViewVectors->m_vHullMax = Vec3(24, 24, 82) - PLAYER_ORIGIN_COMPRESSION;
+				pViewVectors->m_vDuckHullMin = Vec3(-24, -24, 0) + PLAYER_ORIGIN_COMPRESSION;
+				pViewVectors->m_vDuckHullMax = Vec3(24, 24, 62) - PLAYER_ORIGIN_COMPRESSION;
+			}
+		}
+	}
+
+	~CScopedBounds()
+	{
+		if (m_pViewVectors)
+		{
+			m_pViewVectors->m_vHullMin = m_vHullMin;
+			m_pViewVectors->m_vHullMax = m_vHullMax;
+			m_pViewVectors->m_vDuckHullMin = m_vDuckHullMin;
+			m_pViewVectors->m_vDuckHullMax = m_vDuckHullMax;
+		}
+	}
+
+private:
+	CTFPlayer* m_pPlayer = nullptr;
+	CViewVectors* m_pViewVectors = nullptr;
+	Vec3 m_vHullMin, m_vHullMax, m_vDuckHullMin, m_vDuckHullMax;
+};
+
 class CMovementSimulation
 {
 private:
@@ -46,8 +97,8 @@ private:
 	void GetAverageYaw(MoveStorage& tMoveStorage, int iSamples);
 	bool StrafePrediction(MoveStorage& tMoveStorage, int iSamples);
 
-	void SetBounds(CTFPlayer* pPlayer);
-	void RestoreBounds(CTFPlayer* pPlayer);
+	//void SetBounds(CTFPlayer* pPlayer);
+	//void RestoreBounds(CTFPlayer* pPlayer);
 
 	bool m_bOldInPrediction = false;
 	bool m_bOldFirstTimePredicted = false;

@@ -45,6 +45,14 @@ public:
 	operator int() const { return m_nIndex; }
 };
 
+enum modtype_t
+{
+	mod_bad = 0,
+	mod_brush,
+	mod_sprite,
+	mod_studio
+};
+
 class IVModelInfo
 {
 public:

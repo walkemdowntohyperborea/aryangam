@@ -675,27 +675,32 @@ bool CAimbotHitscan::ShouldFire(CTFPlayer* pLocal, CTFWeaponBase* pWeapon, CUser
 			return false;
 
 		trace_t tr;
-		CTraceFilterHitscan filter; filter.pSkip = pLocal;
-		SDK::Trace(m_vEyePos, tTarget.m_vPos, MASK_SHOT, &filter, &tr);
-		if (tr.m_pEnt)
+		CTargetOnlyFilter filter(pLocal, tTarget.m_pEntity);
+		Vector vEyePos = pLocal->GetEyePosition();
+		SDK::Trace(vEyePos, tTarget.m_vPos, MASK_SOLID, &filter, &tr);
+		if (tr.m_pEnt && tr.DidHit())
 		{
-			Ray_t ray; ray.Init(m_vEyePos, tTarget.m_vPos, Vec3(-40.f, -40.f, -40.f), Vec3(40.f, 40.f, 40.f));
-			CBulletPenetrateEnum ePenetrate(m_vEyePos, tTarget.m_vPos, pLocal, TF_DMG_CUSTOM_PENETRATE_MY_TEAM, true);
+			const float flPenetrationHullExtension = 40.0f;
+			Ray_t ray; ray.Init(vEyePos, tTarget.m_vPos, 
+				Vec3(-flPenetrationHullExtension, -flPenetrationHullExtension, -flPenetrationHullExtension),
+				Vec3(flPenetrationHullExtension, flPenetrationHullExtension, flPenetrationHullExtension));
+			CBulletPenetrateEnum ePenetrate(vEyePos, tTarget.m_vPos, pLocal, TF_DMG_CUSTOM_PENETRATE_ALL_PLAYERS, false);
 			I::EngineTrace->EnumerateEntities(ray, false, &ePenetrate);
 
 			bool bDidPenetrate = false;
 			for (int i = 0; i < ePenetrate.m_Targets.Count(); i++)
 			{
 				CBaseEntity* pTarget = ePenetrate.m_Targets[i].pTarget;
-				if (!pTarget || pTarget->GetClassID() == ETFClassID::CWorld)
+				if (!pTarget || !pTarget->IsPlayer() || !pTarget->As<CTFPlayer>()->IsAlive() || pTarget->IsDormant())
 					continue;
 
-				bDidPenetrate = pTarget->m_iTeamNum() == pLocal->m_iTeamNum();
+				bDidPenetrate = pTarget != tTarget.m_pEntity;
 				if (bDidPenetrate)
 					break;
 			}
 			return bDidPenetrate;
 		}
+		return false;
 	}
 
 	return true;

@@ -73,3 +73,31 @@ public:
 	bool ShouldHitEntity(IHandleEntity* pServerEntity, int nContentsMask) override;
 	TraceType_t GetTraceType() const override;
 };
+
+typedef bool (*ShouldHitFunc_t)(IHandleEntity* pHandleEntity, int contentsMask);
+class CTraceFilterSimple : public ITraceFilter
+{
+public:
+	CTraceFilterSimple(const IHandleEntity* passentity, int collisionGroup, ShouldHitFunc_t pExtraShouldHitCheckFn = NULL);
+	virtual bool ShouldHitEntity(IHandleEntity* pHandleEntity, int contentsMask);
+	virtual void SetPassEntity(const IHandleEntity* pPassEntity) { m_pPassEnt = pPassEntity; }
+	virtual void SetCollisionGroup(int iCollisionGroup) { m_collisionGroup = iCollisionGroup; }
+	TraceType_t GetTraceType() const override;
+
+	const IHandleEntity* GetPassEntity(void) { return m_pPassEnt; }
+
+private:
+	const IHandleEntity* m_pPassEnt;
+	int m_collisionGroup;
+	ShouldHitFunc_t m_pExtraShouldHitCheckFunction;
+
+};
+
+class CTargetOnlyFilter : public CTraceFilterSimple
+{
+public:
+	CTargetOnlyFilter(CBaseEntity* pShooter, CBaseEntity* pTarget);
+	virtual bool ShouldHitEntity(IHandleEntity* pHandleEntity, int contentsMask);
+	CBaseEntity* m_pShooter;
+	CBaseEntity* m_pTarget;
+};

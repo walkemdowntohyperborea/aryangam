@@ -361,4 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Amalgam/src/Features/Players/BanChecker/BanChecker.h
+
+# Hiding specific files
+/Amalgam/src/Features/Players/BanChecker

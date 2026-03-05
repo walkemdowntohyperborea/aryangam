@@ -178,3 +178,104 @@ TraceType_t CTraceFilterNavigation::GetTraceType() const
 {
 	return TRACE_EVERYTHING;
 }
+
+static bool StandardFilterRules(IHandleEntity* pHandleEntity, int fContentsMask)
+{
+	CBaseEntity* pCollide = I::ClientEntityList->GetClientEntityFromHandle(pHandleEntity->GetRefEHandle())->As<CBaseEntity>();
+
+	if (!pCollide)
+		return true;
+
+	SolidType_t solid = (SolidType_t)pCollide->m_nSolidType();
+	const model_t* pModel = pCollide->GetModel();
+
+	if ((I::ModelInfoClient->GetModelType(pModel) != mod_brush) || (solid != SOLID_BSP && solid != SOLID_VPHYSICS))
+	{
+		if ((fContentsMask & CONTENTS_MONSTER) == 0)
+			return false;
+	}
+
+	if (!(fContentsMask & CONTENTS_WINDOW) && pCollide->IsTransparent())
+		return false;
+
+	if (!(fContentsMask & CONTENTS_MOVEABLE) && (pCollide->m_MoveType() == MOVETYPE_PUSH))
+		return false;
+
+	return true;
+}
+
+CTraceFilterSimple::CTraceFilterSimple(const IHandleEntity* passedict, int collisionGroup,
+	ShouldHitFunc_t pExtraShouldHitFunc)
+{
+	m_pPassEnt = passedict;
+	m_collisionGroup = collisionGroup;
+	m_pExtraShouldHitCheckFunction = pExtraShouldHitFunc;
+}
+
+bool CTraceFilterSimple::ShouldHitEntity(IHandleEntity* pHandleEntity, int contentsMask)
+{
+	if (!StandardFilterRules(pHandleEntity, contentsMask))
+		return false;
+
+	CBaseEntity* pEntity = I::ClientEntityList->GetClientEntityFromHandle(pHandleEntity->GetRefEHandle())->As<CBaseEntity>();
+	if (!pEntity)
+		return false;
+
+	if (m_pPassEnt)
+	{
+		CBaseEntity* pEntity2 = I::ClientEntityList->GetClientEntityFromHandle(m_pPassEnt->GetRefEHandle())->As<CBaseEntity>();
+		if (!pEntity2 || pHandleEntity == m_pPassEnt 
+			|| pEntity->m_hOwnerEntity() == pEntity2
+			|| pEntity2->m_hOwnerEntity() == pEntity)
+			return false;
+	}
+
+	if (!pEntity->ShouldCollide(m_collisionGroup, contentsMask))
+		return false;
+	if (m_pExtraShouldHitCheckFunction &&
+		(!(m_pExtraShouldHitCheckFunction(pHandleEntity, contentsMask))))
+		return false;
+
+	return true;
+}
+
+TraceType_t CTraceFilterSimple::GetTraceType() const
+{
+	return TRACE_EVERYTHING;
+}
+
+CTargetOnlyFilter::CTargetOnlyFilter(CBaseEntity* pShooter, CBaseEntity* pTarget)
+	: CTraceFilterSimple(pShooter, COLLISION_GROUP_NONE)
+{
+	m_pShooter = pShooter;
+	m_pTarget = pTarget;
+}
+
+static inline bool IsBSPModel(CBaseEntity* pEntity) // im lazy
+{
+	if (pEntity->m_nSolidType() == SOLID_BSP)
+		return true;
+
+	const model_t* pModel = I::ModelInfoClient->GetModel(pEntity->m_nModelIndex());
+	if (pEntity->m_nSolidType() == SOLID_VPHYSICS && I::ModelInfoClient->GetModelType(pModel) == mod_brush)
+		return true;
+
+	return false;
+}
+
+bool CTargetOnlyFilter::ShouldHitEntity(IHandleEntity* pHandleEntity, int contentsMask)
+{
+	CBaseEntity* pEnt = static_cast<CBaseEntity*>(pHandleEntity);
+
+	if (pEnt && pEnt == m_pTarget)
+		return true;
+	else if (!pEnt || pEnt != m_pTarget)
+	{
+		// If we hit a solid piece of the world, we're done.
+		if (IsBSPModel(pEnt) && (pEnt->m_Collision()->m_nSolidType != SOLID_NONE && (pEnt->m_Collision()->m_usSolidFlags & FSOLID_NOT_SOLID) == 0))
+			return CTraceFilterSimple::ShouldHitEntity(pHandleEntity, contentsMask);
+		return false;
+	}
+	else
+		return CTraceFilterSimple::ShouldHitEntity(pHandleEntity, contentsMask);
+}

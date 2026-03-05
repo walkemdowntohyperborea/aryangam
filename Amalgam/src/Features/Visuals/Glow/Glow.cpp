@@ -4,6 +4,7 @@
 #include "../Materials/Materials.h"
 #include "../FakeAngle/FakeAngle.h"
 #include "../../Backtrack/Backtrack.h"
+#include "../../../Hooks/Hooks.h"
 
 void CGlow::SetupBegin(IMatRenderContext* pRenderContext)
 {
@@ -167,7 +168,7 @@ void CGlow::Store(CTFPlayer* pLocal)
 
 		Color_t tColor;
 		if (pGroup->m_bUseHealthGlow && (pEntity->IsBuilding() || pEntity->IsPlayer()))
-			tColor = GetHealthColor(pEntity, pGroup, true);
+			tColor = GetHealthColor(pEntity->m_hOwnerEntity() ? pEntity->m_hOwnerEntity().Get() : pEntity, pGroup, true);
 		else
 			tColor = F::Groups.GetColor(pEntity, pGroup);
 
@@ -260,8 +261,7 @@ void CGlow::RenderBacktrack(const DrawModelState_t& pState, const ModelRenderInf
 
 			//float flOriginalBlend = I::RenderView->GetBlend();
 			//I::RenderView->SetBlend(flBlend * flOriginalBlend);
-			static auto IVModelRender_DrawModelExecute = U::Hooks.m_mHooks["IVModelRender_DrawModelExecute"];
-			IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
+			U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
 			//I::RenderView->SetBlend(flOriginalBlend);
 		};
 	if (!bDrawLast && !bDrawFirst)
@@ -290,15 +290,13 @@ void CGlow::RenderBacktrack(const DrawModelState_t& pState, const ModelRenderInf
 }
 void CGlow::RenderFakeAngle(const DrawModelState_t& pState, const ModelRenderInfo_t& pInfo)
 {
-	static auto IVModelRender_DrawModelExecute = U::Hooks.m_mHooks["IVModelRender_DrawModelExecute"];
-	IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, F::FakeAngle.aBones);
+	U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, F::FakeAngle.aBones);
 }
 void CGlow::RenderHandler(const DrawModelState_t& pState, const ModelRenderInfo_t& pInfo, matrix3x4* pBoneToWorld)
 {
 	if (!m_iFlags)
 	{
-		static auto IVModelRender_DrawModelExecute = U::Hooks.m_mHooks["IVModelRender_DrawModelExecute"];
-		IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
+		U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
 	}
 	else
 	{
@@ -328,15 +326,13 @@ void CGlow::RenderViewmodel(void* ecx, int flags)
 	if (!F::Groups.GetGroup(TargetsEnum::ViewmodelWeapon, pGroup) || !pGroup->m_tGlow())
 		return;
 
-	static auto CBaseAnimating_InternalDrawModel = U::Hooks.m_mHooks["CBaseAnimating_InternalDrawModel"];
-
 	pRenderContext->CullMode(MATERIAL_CULLMODE_CCW); // glow won't work properly with MATERIAL_CULLMODE_CW
 	SetupBegin(pRenderContext);
-	CBaseAnimating_InternalDrawModel->Call<int>(ecx, flags);
+	U::Hooks.m_CBaseAnimating_InternalDrawModel.fastcall<int>(ecx, flags);
 	SetupMid(pRenderContext, w, h);
 	I::RenderView->SetColorModulation(pGroup->m_tColor);
 	I::RenderView->SetBlend(pGroup->m_tColor.a / 255.f);
-	CBaseAnimating_InternalDrawModel->Call<int>(ecx, flags);
+	U::Hooks.m_CBaseAnimating_InternalDrawModel.fastcall<int>(ecx, flags);
 	SetupEnd(pGroup->m_tGlow, pRenderContext, w, h);
 
 	pRenderContext->CullMode(G::FlipViewmodels ? MATERIAL_CULLMODE_CW : MATERIAL_CULLMODE_CCW);
@@ -360,15 +356,13 @@ void CGlow::RenderViewmodel(const DrawModelState_t& pState, const ModelRenderInf
 	if (!F::Groups.GetGroup(TargetsEnum::ViewmodelHands, pGroup) || !pGroup->m_tGlow())
 		return;
 
-	static auto IVModelRender_DrawModelExecute = U::Hooks.m_mHooks["IVModelRender_DrawModelExecute"];
-
 	pRenderContext->CullMode(MATERIAL_CULLMODE_CCW); // glow won't work properly with MATERIAL_CULLMODE_CW
 	SetupBegin(pRenderContext);
-	IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
+	U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
 	SetupMid(pRenderContext, w, h);
 	I::RenderView->SetColorModulation(pGroup->m_tColor);
 	I::RenderView->SetBlend(pGroup->m_tColor.a / 255.f);
-	IVModelRender_DrawModelExecute->Call<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
+	U::Hooks.m_IVModelRender_DrawModelExecute.fastcall<void>(I::ModelRender, pState, pInfo, pBoneToWorld);
 	SetupEnd(pGroup->m_tGlow, pRenderContext, w, h);
 
 	pRenderContext->CullMode(G::FlipViewmodels ? MATERIAL_CULLMODE_CW : MATERIAL_CULLMODE_CCW);

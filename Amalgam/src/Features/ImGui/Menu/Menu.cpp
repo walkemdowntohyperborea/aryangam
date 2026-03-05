@@ -1501,7 +1501,7 @@ void CMenu::MenuLogs(int iTab)
 									{
 										std::string sTagName = std::format("SB: {}", banInfo.m_iSourceBanCount);
 										Color_t tColor = banInfo.m_iSourceBanCount >= 3 ? Color_t(255, 50, 50, 255) :
-											banInfo.m_iSourceBanCount >= 2 ? Color_t(255, 150, 50, 255) :
+											banInfo.m_iSourceBanCount == 2 ? Color_t(255, 150, 50, 255) :
 											Color_t(255, 200, 100, 255);
 										vLabels.emplace_back(sTagName, tColor);
 									}
@@ -1510,7 +1510,6 @@ void CMenu::MenuLogs(int iTab)
 									{
 										std::string sTagName = std::format("VAC: {}", banInfo.m_iVACBanCount);
 										vLabels.emplace_back(sTagName, Color_t(150, 50, 255, 255));
-
 									}
 
 									if (banInfo.m_bGameBanned && banInfo.m_iGameBanCount > 0)
