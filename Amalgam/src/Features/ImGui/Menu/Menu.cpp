@@ -1253,13 +1253,6 @@ void CMenu::MenuVisuals(int iTab)
 						FToggle(Vars::Menu::SyncedTicks, FToggleEnum::Right);
 					}
 					PopTransparent();
-					if (FButton("THE DING BUTTON"))
-					{
-						if(SDK::StdRandomInt(1,7) != 1)
-							I::MatSystemSurface->PlaySound("ui/mm_medal_click.wav");
-						else
-							I::MatSystemSurface->PlaySound("ui/mm_medal_click_rare.wav");
-					}
 				} EndSection();
 			}
 		} EndTable();
