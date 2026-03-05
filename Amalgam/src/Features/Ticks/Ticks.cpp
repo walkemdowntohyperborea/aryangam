@@ -590,24 +590,24 @@ void CTicks::Draw(CTFPlayer* pLocal)
 		int iSizeX = H::Draw.Scale(85, Scale_Round), iSizeY = H::Draw.Scale(8, Scale_Round);
 		int iPosX = dtPos.x - iSizeX / 2, iPosY = dtPos.y + fFont.m_nTall + H::Draw.Scale(4) + 1;
 
-		Color_t BarNitroRightGradient = Vars::Menu::Theme::Accent.Value;
-		Color_t BarRijinVTwoLeftGradient = Vars::Colors::PrimaryBarColor.Value;
-		Color_t BarRijinVTwoRightGradient = Vars::Colors::SecondaryBarColor.Value;
-		Color_t BarNitroLeftGradient, BarRijinVTwoBackground, BarSeOwnedDEFilled = Vars::Menu::Theme::Background.Value;
-		Color_t BarRijinVOneFilled = { 78, 125, 32, 255 };
-		Color_t BarLboxFilled = { 0, 255, 0, 255 };
-		Color_t BarCathookPartial = { 255, 120, 0, 100 };
-		Color_t BarCathookFilled = { 0, 255, 0, 100 };
-		Color_t BarAterisRightGradient = { 20, 20, 20, 50 };
-		Color_t BarDeadFlagLeftGradient = { 165, 167, 209, 255 };
-		Color_t BarDeadFlagRightGradient = { 238, 217, 223, 255 };
+		Color_t tBarNitroRightGradient = Vars::Menu::Theme::Accent.Value;
+		Color_t tBarRijinVTwoLeftGradient = Vars::Colors::PrimaryBarColor.Value;
+		Color_t tBarRijinVTwoRightGradient = Vars::Colors::SecondaryBarColor.Value;
+		Color_t tBarNitroLeftGradient, BarRijinVTwoBackground, BarSeOwnedDEFilled = Vars::Menu::Theme::Background.Value;
+		Color_t tBarRijinVOneFilled = { 78, 125, 32, 255 };
+		Color_t tBarLBoxFilled = { 0, 255, 0, 255 };
+		Color_t tBarCathookPartial = { 255, 120, 0, 100 };
+		Color_t tBarCathookFilled = { 0, 255, 0, 100 };
+		Color_t tBarAterisRightGradient = { 20, 20, 20, 50 };
+		Color_t tBarDeadFlagLeftGradient = { 165, 167, 209, 255 };
+		Color_t tBarDeadFlagRightGradient = { 238, 217, 223, 255 };
 
 
 		if (Vars::Colors::PrimaryBarColor.Value.a != 0) {
-			BarNitroRightGradient = BarRijinVTwoLeftGradient = BarLboxFilled = BarRijinVOneFilled = BarCathookFilled = BarSeOwnedDEFilled = BarDeadFlagLeftGradient = Vars::Colors::PrimaryBarColor.Value;
+			tBarNitroRightGradient = tBarRijinVTwoLeftGradient = tBarLBoxFilled = tBarRijinVOneFilled = tBarCathookFilled = BarSeOwnedDEFilled = tBarDeadFlagLeftGradient = Vars::Colors::PrimaryBarColor.Value;
 		}
 		if (Vars::Colors::SecondaryBarColor.Value.a != 0) {
-			BarNitroLeftGradient = BarRijinVTwoRightGradient = BarCathookPartial = BarDeadFlagRightGradient = Vars::Colors::SecondaryBarColor.Value;
+			tBarNitroLeftGradient = tBarRijinVTwoRightGradient = tBarCathookPartial = tBarDeadFlagRightGradient = Vars::Colors::SecondaryBarColor.Value;
 		}
 
 		switch (Vars::Menu::TickDisplayStyle.Value)
@@ -619,7 +619,7 @@ void CTicks::Draw(CTFPlayer* pLocal)
 			if (flRatio)
 			{
 				H::Draw.StartClipping(iPosX + 1, iPosY + 1, iSizeX * flRatio - 2, iSizeY - 2);
-				H::Draw.GradientRect(iPosX + 1, iPosY + 1, iSizeX - 2, iSizeY - 2, BarNitroLeftGradient, BarNitroRightGradient, true);
+				H::Draw.GradientRect(iPosX + 1, iPosY + 1, iSizeX - 2, iSizeY - 2, tBarNitroLeftGradient, tBarNitroRightGradient, true);
 				H::Draw.EndClipping();
 			}
 			break;
@@ -644,9 +644,9 @@ void CTicks::Draw(CTFPlayer* pLocal)
 
 			if (flRatio)
 			{
-				Color_t barCathook = BarCathookPartial;
+				Color_t barCathook = tBarCathookPartial;
 				if (iTicks == iMax)
-					barCathook = BarCathookFilled;
+					barCathook = tBarCathookFilled;
 				H::Draw.StartClipping(iPosX, iPosY, iSize * 2.0f * flRatio, iSize / 5.0f);
 				H::Draw.FillRect(iPosX, iPosY, iSize * 2.0f * flRatio, iSize / 5.0f, barCathook);
 				H::Draw.EndClipping();
@@ -696,7 +696,7 @@ void CTicks::Draw(CTFPlayer* pLocal)
 
 			if (flRatio)
 			{				
-				H::Draw.FillRectOutline(iPosX, iPosY + 8, 110.f * flRatio, 5, BarRijinVOneFilled);
+				H::Draw.FillRectOutline(iPosX, iPosY + 8, 110.f * flRatio, 5, tBarRijinVOneFilled);
 			}
 			break;
 		}
@@ -725,10 +725,10 @@ void CTicks::Draw(CTFPlayer* pLocal)
 			int iFillW = std::clamp(int(flInterpRatio * iBarW), 0, iBarW);
 			if (iFillW)
 			{
-				H::Draw.GradientRect(iPosX, iPosY, iFillW, iBarH, BarRijinVTwoLeftGradient, BarRijinVTwoRightGradient, true);
+				H::Draw.GradientRect(iPosX, iPosY, iFillW, iBarH, tBarRijinVTwoLeftGradient, tBarRijinVTwoRightGradient, true);
 
 				float flPulseAlpha = std::clamp(std::sin(I::GlobalVars->curtime * 1.5f) * 100.f + 155.f, 0.f, 255.f);
-				H::Draw.FillRect(iPosX, iPosY, iFillW, iBarH, BarRijinVTwoLeftGradient.Alpha(flPulseAlpha));
+				H::Draw.FillRect(iPosX, iPosY, iFillW, iBarH, tBarRijinVTwoLeftGradient.Alpha(flPulseAlpha));
 			}
 
 			H::Draw.LineRect(iPosX, iPosY, iBarW, iBarH, Vars::Menu::Theme::Accent.Value);
@@ -794,7 +794,7 @@ void CTicks::Draw(CTFPlayer* pLocal)
 			// draw background & outline
 			H::Draw.FillRectOutline(iPosX - 1, iPosY - 1, barBGSizeX, barBGSizeY + 2, tBlack, Vars::Menu::Theme::Accent.Value);
 
-			H::Draw.FillRectOutline(iPosX, iPosY, std::min(barBGSizeX * flRatio, barBGSizeX - 2), barBGSizeY, BarLboxFilled);
+			H::Draw.FillRectOutline(iPosX, iPosY, std::min(barBGSizeX * flRatio, barBGSizeX - 2), barBGSizeY, tBarLBoxFilled);
 			if (m_bRecharge)
 				H::Draw.StringOutlined(fFont, iPosX + barBGSizeX / 2, iPosY - fFont.m_nTall, Vars::Menu::Theme::Accent.Value, tBlack, ALIGN_CENTER, "CHARGING");
 			break;
@@ -808,7 +808,7 @@ void CTicks::Draw(CTFPlayer* pLocal)
 			H::Draw.FillRectOutline(iPosX, iPosY, iBarW, iBarH, Vars::Menu::Theme::Background.Value);
 
 			Color_t tGradientStart = Vars::Menu::Theme::Accent.Value;
-			Color_t tGradientEnd = BarAterisRightGradient;
+			Color_t tGradientEnd = tBarAterisRightGradient;
 
 			const auto pWeapon = H::Entities.GetWeapon();
 			const bool bValidWeapon = pWeapon && ValidWeapon(pWeapon);
@@ -875,7 +875,7 @@ void CTicks::Draw(CTFPlayer* pLocal)
 			iPosX -= 9;
 
 			H::Draw.GradientRect(iPosX, iPosY, nBarW, nBarH, { 35, 35, 35, 255 }, { 20, 20, 20, 255 }, false);
-			H::Draw.GradientRect(iPosX, iPosY, nBarW * flRatio, nBarH, BarDeadFlagLeftGradient, BarDeadFlagRightGradient, true);
+			H::Draw.GradientRect(iPosX, iPosY, nBarW * flRatio, nBarH, tBarDeadFlagLeftGradient, tBarDeadFlagRightGradient, true);
 			H::Draw.LineRect(iPosX - 1, iPosY - 1, nBarW + 2, nBarH + 2, { 20, 20, 20, 255 });
 
 			Color_t tStatusColor{};

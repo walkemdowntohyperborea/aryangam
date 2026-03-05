@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Hiding specific files
 /Amalgam/src/Features/Players/BanChecker
+/Amalgam/src/Features/Players/BanChecker/BanChecker.h
