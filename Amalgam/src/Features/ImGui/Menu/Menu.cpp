@@ -1224,8 +1224,8 @@ void CMenu::MenuVisuals(int iTab)
 						FDropdown(Vars::Menu::TickDisplayStyle, FDropdownEnum::Left, -20);
 					}
 					PopTransparent();
-					FColorPicker(Vars::Colors::IndicatorGradientStart, FColorPickerEnum::SameLine, {}, { H::Draw.Scale(10), H::Draw.Scale(40) });
-					FColorPicker(Vars::Colors::IndicatorGradientEnd, FColorPickerEnum::SameLine, {}, { H::Draw.Scale(10), H::Draw.Scale(40) });
+					FColorPicker(Vars::Colors::PrimaryBarColor, FColorPickerEnum::SameLine, {}, { H::Draw.Scale(10), H::Draw.Scale(40) });
+					FColorPicker(Vars::Colors::SecondaryBarColor, FColorPickerEnum::SameLine, {}, { H::Draw.Scale(10), H::Draw.Scale(40) });
 
 					FDropdown(Vars::Menu::CritDisplayStyle, FDropdownEnum::Right);
 
