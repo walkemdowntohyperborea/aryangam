@@ -667,16 +667,17 @@ void CTicks::Draw(CTFPlayer* pLocal)
 		}
 		case Vars::Menu::TickDisplayStyleEnum::RijiNv1:
 		{
+			Color_t tFillColor = Vars::Menu::Theme::Accent.Value;
 			Color_t tBackgroundColor = { 23, 23, 23, 215 };
+
 			if (flRatio)
 				tBackgroundColor = { 0, 0, 0, 255 };
 
 			H::Draw.FillRect(iPosX - 1, iPosY + 7, 112, 7, tBackgroundColor);
 
 			if (flRatio)
-			{
-				constexpr Color_t tBarColor = { 78, 125, 32, 255 };
-				H::Draw.FillRectOutline(iPosX, iPosY + 8, 110.f * flRatio, 5, tBarColor);
+			{				
+				H::Draw.FillRectOutline(iPosX, iPosY + 8, 110.f * flRatio, 5, tFillColor);
 			}
 			break;
 		}
