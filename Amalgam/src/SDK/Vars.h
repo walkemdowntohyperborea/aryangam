@@ -325,6 +325,7 @@ namespace Vars
 			CVar(AutoShootSpells, "Auto shoot spells", false);
 			CVar(FOVCircle, "FOV Circle", true, VISUAL);
 			CVar(NoSpread, "No spread", false);
+			CVar(PreferMedics, "Prefer medics", true);
 			
 			CVarEnum(AimHoldsFire, "Aim holds fire", 2, NOSAVE | DEBUGVAR, nullptr,
 				VA_LIST("False", "Minigun only", "Always"),
