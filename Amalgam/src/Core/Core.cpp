@@ -99,6 +99,7 @@ void CCore::Load()
 	F::Materials.LoadMaterials();
 	U::ConVars.Unlock();
 	F::CheaterDetection.InitList();
+	F::BanChecker.Initialize();
 
 	F::Configs.LoadVisual(F::Configs.m_sCurrentVisuals, false);
 	F::Configs.LoadConfig(F::Configs.m_sCurrentConfig, false);
