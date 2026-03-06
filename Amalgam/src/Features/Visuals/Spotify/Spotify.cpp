@@ -81,7 +81,7 @@ static std::string GetSpotifyTrackInfo()
 			if (sLowerTitle.find("spotify") != std::string::npos)
 				return "";
 
-			return sLowerTitle;
+			return sTitle;
 		}
 	}
 	return "";
@@ -103,6 +103,13 @@ void CSpotifySong::Draw()
 	const auto& fFont = H::Fonts.GetFont(FONT_INDICATORS);
 	int x = Vars::Menu::SpotifySongDisplay.Value.x;
 	int y = Vars::Menu::SpotifySongDisplay.Value.y;
+
+	int nWidth = H::Draw.GetTextSize(sSpotifyTitle.c_str(), fFont).x;
+	int _x = x - nWidth / 2; // ALIGN_CENTER
+	if (_x <= 0)
+		x += abs(_x);
+	else if (_x + nWidth >= H::Draw.m_nScreenW)
+		x -= _x + nWidth - H::Draw.m_nScreenW;
 
 	H::Draw.StringOutlined(fFont, x, y + 20, Vars::Menu::Theme::Accent.Value, Vars::Menu::Theme::Background.Value, ALIGN_CENTER, sSpotifyTitle.c_str());
 }
