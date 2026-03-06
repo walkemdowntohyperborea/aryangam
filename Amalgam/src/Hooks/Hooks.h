@@ -9,7 +9,7 @@
 
 #define CREATE_HOOK(name) safetyhook::InlineHook m_##name
 #define INIT_HOOK(name, addr) m_##name## = safetyhook::create_inline(addr, name)
-#define UNLOAD_HOOK(name) m_##name##.reset()
+#define UNLOAD_HOOK(name) m_##name## = {}
 
 //#define SEEDPRED_DEBUG
 
