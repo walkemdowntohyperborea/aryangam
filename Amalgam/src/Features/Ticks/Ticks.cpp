@@ -590,7 +590,7 @@ void CTicks::Draw(CTFPlayer* pLocal)
 		int iSizeX = H::Draw.Scale(85, Scale_Round), iSizeY = H::Draw.Scale(8, Scale_Round);
 		int iPosX = dtPos.x - iSizeX / 2, iPosY = dtPos.y + fFont.m_nTall + H::Draw.Scale(4) + 1;
 
-		Color_t tBarNitroRightGradient = Vars::Menu::Theme::Accent.Value;
+		Color_t tBarNitroRightGradient, tBarAterisLeftGradient = Vars::Menu::Theme::Accent.Value;
 		Color_t tBarRijinVTwoLeftGradient = Vars::Colors::PrimaryBarColor.Value;
 		Color_t tBarRijinVTwoRightGradient = Vars::Colors::SecondaryBarColor.Value;
 		Color_t tBarNitroLeftGradient, BarRijinVTwoBackground, BarSeOwnedDEFilled = Vars::Menu::Theme::Background.Value;
@@ -604,10 +604,10 @@ void CTicks::Draw(CTFPlayer* pLocal)
 
 
 		if (Vars::Colors::PrimaryBarColor.Value.a != 0) {
-			tBarNitroRightGradient = tBarRijinVTwoLeftGradient = tBarLBoxFilled = tBarRijinVOneFilled = tBarCathookFilled = BarSeOwnedDEFilled = tBarDeadFlagLeftGradient = Vars::Colors::PrimaryBarColor.Value;
+			tBarNitroRightGradient = tBarRijinVTwoLeftGradient = tBarLBoxFilled = tBarRijinVOneFilled = tBarCathookFilled = BarSeOwnedDEFilled = tBarAterisLeftGradient = tBarDeadFlagLeftGradient = Vars::Colors::PrimaryBarColor.Value;
 		}
 		if (Vars::Colors::SecondaryBarColor.Value.a != 0) {
-			tBarNitroLeftGradient = tBarRijinVTwoRightGradient = tBarCathookPartial = tBarDeadFlagRightGradient = Vars::Colors::SecondaryBarColor.Value;
+			tBarNitroLeftGradient = tBarRijinVTwoRightGradient = tBarCathookPartial = tBarDeadFlagRightGradient = tBarAterisRightGradient = Vars::Colors::SecondaryBarColor.Value;
 		}
 
 		switch (Vars::Menu::TickDisplayStyle.Value)
@@ -807,7 +807,7 @@ void CTicks::Draw(CTFPlayer* pLocal)
 
 			H::Draw.FillRectOutline(iPosX, iPosY, iBarW, iBarH, Vars::Menu::Theme::Background.Value);
 
-			Color_t tGradientStart = Vars::Menu::Theme::Accent.Value;
+			Color_t tGradientStart = tBarAterisLeftGradient;
 			Color_t tGradientEnd = tBarAterisRightGradient;
 
 			const auto pWeapon = H::Entities.GetWeapon();
