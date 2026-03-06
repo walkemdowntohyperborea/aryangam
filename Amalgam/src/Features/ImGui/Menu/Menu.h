@@ -4,14 +4,6 @@
 #include <ImGui/TextEditor.h>
 #include <mutex>
 
-#include "../Features/Vars.h"
-#include "../SDK/Helpers/Draw.h"
-#include "Input.h"
-#include <vector>
-#include <utility>
-#include <functional>
-#include <memory>
-
 class CMenuWindow;
 class CMenuTab;
 class CMenuGroupbox;
