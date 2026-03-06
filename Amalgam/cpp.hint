@@ -19,7 +19,7 @@
 #define MAKE_SIGNATURE(name, dll, sig, offset) namespace S { inline CSignature name(dll, sig, offset, #name); }
 #define CREATE_HOOK(name) safetyhook::InlineHook m_##name
 #define INIT_HOOK(name, addr) m_##name## = safetyhook::create_inline(addr, name)
-#define UNLOAD_HOOK(name) m_##name##.reset()
+#define UNLOAD_HOOK(name) m_##name## = {}
 #define CALL_ORIGINAL(hook, type, ...) U::Hooks.m_##hook##.fastcall<type>(__VA_ARGS__)
 #define UNLOAD_RETURN(hook, type, ...) if (G::Unload) return U::Hooks.m_##hook##.fastcall<type>(__VA_ARGS__)
 #define MAKE_INTERFACE_VERSION(type, name, dll, version) namespace I { inline type *name = nullptr; } \
