@@ -4,20 +4,6 @@
 #include <ImGui/TextEditor.h>
 #include <mutex>
 
-class CMenuWindow;
-class CMenuTab;
-class CMenuGroupbox;
-class CItem;
-class CItemCheckbox;
-class CItemButton;
-class CItemKeybind;
-class CItemCombobox;
-class CItemSliderInt;
-class CItemSliderFloat;
-class CItemColorPicker;
-class CItemMultiCombobox;
-class CItemTextbox;
-
 struct Output_t
 {
 	std::string m_sFunction;
