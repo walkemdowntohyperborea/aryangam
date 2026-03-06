@@ -3022,33 +3022,6 @@ void __fastcall CViewRender_DrawViewModels(void* rcx, const CViewSetup& viewRend
 	CALL_ORIGINAL(CViewRender_DrawViewModels, void, rcx, viewRender, F::Spectate.GetTarget() != -1 ? false : drawViewmodel);
 }
 
-void __fastcall CTFPlayer_UpdateClientSideAnimation(void* rcx)
-{
-	UNLOAD_RETURN(CTFPlayer_UpdateClientSideAnimation, void, rcx);
-
-	if (Vars::Misc::Game::AccuracyImprovements.Value)
-	{
-		auto pLocal = H::Entities.GetLocal();
-		if (rcx == pLocal)
-		{
-			if (!pLocal->InCond(TF_COND_HALLOWEEN_KART))
-			{
-				auto pWeapon = H::Entities.GetWeapon();
-				if (pWeapon)
-					pWeapon->UpdateAllViewmodelAddons();
-
-				return;
-			}
-			CALL_ORIGINAL(CTFPlayer_UpdateClientSideAnimation, void, rcx);
-		}
-
-		if (!G::UpdatingAnims)
-			return;
-	}
-
-	CALL_ORIGINAL(CTFPlayer_UpdateClientSideAnimation, void, rcx);
-}
-
 void __fastcall CTFPlayer_UpdateStepSound(void* rcx, void* psurface, const Vec3& vecOrigin, const Vec3& vecVelocity)
 {
 	UNLOAD_RETURN(CTFPlayer_UpdateStepSound, void, rcx, psurface, std::ref(vecOrigin), std::ref(vecVelocity));
@@ -3273,7 +3246,7 @@ bool __fastcall CTFConditionList_InCond(void* rcx, ETFCond type)
 		return CALL_ORIGINAL(CTFConditionList_InCond, bool, rcx, type);
 
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
-	static const auto dwWeapon = S::CTFPlayerShared_UpdateCritBoostEffect_Call();
+	static const auto dwWeapon = S::CTFPlayerShared_InCond_UpdateCritBoostEffect_Call();
 	if (dwRetAddr == dwWeapon)
 	{
 		const auto pLocal = H::Entities.GetLocal();
@@ -4501,7 +4474,6 @@ bool CHooks::Initialize()
 	INIT_HOOK(CBasePlayer_ShouldDrawLocalPlayer, S::CBasePlayer_ShouldDrawLocalPlayer());
 	INIT_HOOK(CBaseCombatWeapon_ShouldDraw, S::CBaseCombatWeapon_ShouldDraw());
 	INIT_HOOK(CViewRender_DrawViewModels, S::CViewRender_DrawViewModels());
-	INIT_HOOK(CTFPlayer_UpdateClientSideAnimation, S::CTFPlayer_UpdateClientSideAnimation());
 	INIT_HOOK(CTFPlayer_UpdateStepSound, S::CTFPlayer_UpdateStepSound());
 	INIT_HOOK(CTFPlayerInventory_GetMaxItemCount, S::CTFPlayerInventory_GetMaxItemCount());
 	INIT_HOOK(CTFPlayerInventory_VerifyChangedLoadoutsAreValid, S::CTFPlayerInventory_VerifyChangedLoadoutsAreValid());
@@ -4689,7 +4661,6 @@ bool CHooks::Unload()
 	UNLOAD_HOOK(CBasePlayer_ShouldDrawLocalPlayer);
 	UNLOAD_HOOK(CBaseCombatWeapon_ShouldDraw);
 	UNLOAD_HOOK(CViewRender_DrawViewModels);
-	UNLOAD_HOOK(CTFPlayer_UpdateClientSideAnimation);
 	UNLOAD_HOOK(CTFPlayer_UpdateStepSound);
 	UNLOAD_HOOK(CTFPlayerInventory_GetMaxItemCount);
 	UNLOAD_HOOK(CTFPlayerInventory_VerifyChangedLoadoutsAreValid);

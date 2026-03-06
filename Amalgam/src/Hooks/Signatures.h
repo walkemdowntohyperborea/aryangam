@@ -142,10 +142,10 @@ MAKE_SIGNATURE(CTFPlayer_CreateMove_InCondTaunt_Call, "client.dll", "84 C0 75 ? 
 MAKE_SIGNATURE(CTFPlayer_CreateMove_InCondKart_Call, "client.dll", "84 C0 74 ? 4C 8B C3", 0x0);
 MAKE_SIGNATURE(CTFInput_ApplyMouse_InCond_Call, "client.dll", "84 C0 74 ? F3 0F 10 9B", 0x0);
 MAKE_SIGNATURE(CTFConditionList_InCond, "client.dll", "8B 41 ? 0F A3 D0 0F 92 C0 C3 CC CC CC CC CC CC 40 53", 0x0);
-MAKE_SIGNATURE(CTFPlayerShared_UpdateCritBoostEffect_Call, "client.dll", "45 33 FF 84 C0 0F 85 ? ? ? ? 8B 86", 0x0);
+MAKE_SIGNATURE(CTFPlayerShared_InCond_UpdateCritBoostEffect_Call, "client.dll", "45 33 F6 84 C0 0F 85 ? ? ? ? F7 86", 0x0);
 MAKE_SIGNATURE(CTFPlayerShared_IsCritBoosted, "client.dll", "48 89 5C 24 ? 57 48 83 EC ? 48 8B D9 0F 29 7C 24", 0x0);
 MAKE_SIGNATURE(CTFPlayerShared_IsCritBoosted_CProxyModelGlowColor_OnBind_Call, "client.dll", "48 8B CF 84 C0 74 ? BA", 0x0);
-MAKE_SIGNATURE(CTFPlayerShared_UpdateCritBoostEffect, "client.dll", "48 8B C4 48 89 58 ? 55 56 41 57", 0x0);
+MAKE_SIGNATURE(CTFPlayerShared_UpdateCritBoostEffect, "client.dll", "48 8B C4 48 89 58 ? 48 89 70 ? 48 89 78 ? 41 56 48 81 EC ? ? ? ? 48 89 68", 0x0);
 MAKE_SIGNATURE(CTFPlayerShared_IsPlayerDominated, "client.dll", "48 89 5C 24 ? 48 89 74 24 ? 57 48 83 EC ? 48 63 F2 48 8B D9 E8", 0x0);
 MAKE_SIGNATURE(CTFClientScoreBoardDialog_UpdatePlayerList_IsPlayerDominated_Call, "client.dll", "84 C0 74 ? 45 84 FF 74", 0x0);
 MAKE_SIGNATURE(CTFPlayerShared_ShouldSuppressPrediction, "client.dll", "8B 81 ? ? ? ? 0F BA E0", 0x0);

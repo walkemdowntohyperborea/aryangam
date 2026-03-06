@@ -140,7 +140,6 @@ public:
 	CREATE_HOOK(CBasePlayer_ShouldDrawLocalPlayer);
 	CREATE_HOOK(CBaseCombatWeapon_ShouldDraw);
 	CREATE_HOOK(CViewRender_DrawViewModels);
-	CREATE_HOOK(CTFPlayer_UpdateClientSideAnimation);
 	CREATE_HOOK(CTFPlayer_UpdateStepSound);
 	CREATE_HOOK(CTFPlayerInventory_GetMaxItemCount);
 	CREATE_HOOK(CTFPlayerInventory_VerifyChangedLoadoutsAreValid);
