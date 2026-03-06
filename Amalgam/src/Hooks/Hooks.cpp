@@ -59,8 +59,6 @@
 
 bool __fastcall bf_read_ReadString(void* rcx, char* pStr, int maxLen, bool bLine, int* pOutNumChars)
 {
-	UNLOAD_RETURN(bf_read_ReadString, bool, rcx, pStr, maxLen, bLine, pOutNumChars);
-
 	static const auto dwDesired = S::CHudVote_MsgFunc_VoteStart_ReadString_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -105,15 +103,11 @@ bool __fastcall bf_read_ReadString(void* rcx, char* pStr, int maxLen, bool bLine
 
 bool __fastcall CAchievementMgr_CheckAchievementsEnabled(void* rcx)
 {
-	UNLOAD_RETURN(CAchievementMgr_CheckAchievementsEnabled, bool, rcx);
-
 	return !I::EngineClient->IsPlayingDemo();
 }
 
 int __fastcall CAttributeManager_AttribHookInt(int value, const char* name, void* econent, void* buffer, bool isGlobalConstString)
 {
-	UNLOAD_RETURN(CAttributeManager_AttribHookInt, int, value, name, econent, buffer, isGlobalConstString);
-
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwDesired = S::CTFPlayer_FireEvent_AttribHookValue_Call();
 
@@ -135,8 +129,6 @@ int __fastcall CAttributeManager_AttribHookInt(int value, const char* name, void
 
 bool __fastcall CBaseAnimating_Interpolate(void* rcx, float currentTime)
 {
-	UNLOAD_RETURN(CBaseAnimating_Interpolate, bool, rcx, currentTime);
-
 	if (rcx == H::Entities.GetLocal() ? F::Ticks.m_bRecharge : Vars::Visuals::Removals::Interpolation.Value)
 		return true;
 
@@ -150,15 +142,11 @@ bool __fastcall CBaseAnimating_Interpolate(void* rcx, float currentTime)
 
 void __fastcall CBaseAnimating_MaintainSequenceTransitions(void* rcx, void* boneSetup, float flCycle, Vec3 pos[], Vector4D q[])
 {
-	UNLOAD_RETURN(CBaseAnimating_MaintainSequenceTransitions, void, rcx, boneSetup, flCycle, pos, q);
-
 	return;
 }
 
 void __fastcall CBaseAnimating_SetSequence(void* rcx, int nSequence)
 {
-	UNLOAD_RETURN(CBaseAnimating_SetSequence, void, rcx, nSequence);
-
 	auto pEntity = reinterpret_cast<CBaseAnimating*>(rcx);
 	if (pEntity->m_nSequence() != nSequence && !pEntity->m_bSequenceLoops())
 		pEntity->m_flCycle() = 0.f; // set on the server but not client
@@ -168,8 +156,6 @@ void __fastcall CBaseAnimating_SetSequence(void* rcx, int nSequence)
 
 bool __fastcall CBaseAnimating_SetupBones(void* rcx, matrix3x4* pBoneToWorldOut, int nMaxBones, int boneMask, float currentTime)
 {
-	UNLOAD_RETURN(CBaseAnimating_SetupBones, bool, rcx, pBoneToWorldOut, nMaxBones, boneMask, currentTime);
-
 	if (!Vars::Misc::Game::SetupBonesOptimization.Value || F::Backtrack.IsSettingUpBones())
 		return CALL_ORIGINAL(CBaseAnimating_SetupBones, bool, rcx, pBoneToWorldOut, nMaxBones, boneMask, currentTime);
 
@@ -196,8 +182,6 @@ bool __fastcall CBaseAnimating_SetupBones(void* rcx, matrix3x4* pBoneToWorldOut,
 
 void __fastcall CBaseAnimating_UpdateClientSideAnimation(void* rcx)
 {
-	UNLOAD_RETURN(CBaseAnimating_UpdateClientSideAnimation, void, rcx);
-
 	auto pLocal = H::Entities.GetLocal();
 	auto pPlayer = reinterpret_cast<CTFPlayer*>(rcx);
 	if ((Vars::Visuals::Removals::Interpolation.Value || F::Resolver.GetAngles(pPlayer)) && !G::UpdatingAnims
@@ -209,8 +193,6 @@ void __fastcall CBaseAnimating_UpdateClientSideAnimation(void* rcx)
 
 void __fastcall CBaseEntity_AddVar(void* rcx, void* data, IInterpolatedVar* watcher, int type, bool bSetup)
 {
-	UNLOAD_RETURN(CBaseEntity_AddVar, void, rcx, data, watcher, type, bSetup);
-
 	if (Vars::Misc::Game::AccuracyImprovements.Value && watcher)
 	{
 		uint32_t uHash = FNV1A::Hash32(watcher->GetDebugName());
@@ -230,8 +212,6 @@ void __fastcall CBaseEntity_AddVar(void* rcx, void* data, IInterpolatedVar* watc
 
 int __fastcall CBaseEntity_BaseInterpolatePart1(void* rcx, float& currentTime, Vector& oldOrigin, QAngle& oldAngles, Vector& oldVel, int& bNoMoreChanges)
 {
-	UNLOAD_RETURN(CBaseEntity_BaseInterpolatePart1, int, rcx, std::ref(currentTime), std::ref(oldOrigin), std::ref(oldAngles), std::ref(oldVel), std::ref(bNoMoreChanges));
-
 	auto pEntity = reinterpret_cast<CBaseEntity*>(rcx);
 	if (pEntity && pEntity->GetClassID() == ETFClassID::CTFViewModel && F::Ticks.m_bRecharge)
 	{
@@ -244,8 +224,6 @@ int __fastcall CBaseEntity_BaseInterpolatePart1(void* rcx, float& currentTime, V
 
 void __fastcall CBaseEntity_EstimateAbsVelocity(void* rcx, Vector& vel)
 {
-	UNLOAD_RETURN(CBaseEntity_EstimateAbsVelocity, void, rcx, std::ref(vel));
-
 	auto pPlayer = reinterpret_cast<CTFPlayer*>(rcx);
 	if (!pPlayer->IsPlayer())
 		return CALL_ORIGINAL(CBaseEntity_EstimateAbsVelocity, void, rcx, std::ref(vel));
@@ -274,8 +252,6 @@ void __fastcall CBaseEntity_EstimateAbsVelocity(void* rcx, Vector& vel)
 
 void __fastcall CBaseEntity_InterpolateServerEntities(void* rcx)
 {
-	UNLOAD_RETURN(CBaseEntity_InterpolateServerEntities, void, rcx);
-
 	if (Vars::Misc::Game::AccuracyImprovements.Value)
 	{
 		static auto cl_extrapolate = U::ConVars.FindVar("cl_extrapolate");
@@ -288,8 +264,6 @@ void __fastcall CBaseEntity_InterpolateServerEntities(void* rcx)
 
 void __fastcall CBaseEntity_ResetLatched(void* rcx)
 {
-	UNLOAD_RETURN(CBaseEntity_ResetLatched, void, rcx);
-
 	if (rcx == H::Entities.GetLocal())
 		return;
 
@@ -298,8 +272,6 @@ void __fastcall CBaseEntity_ResetLatched(void* rcx)
 
 void __fastcall CBaseEntity_SetAbsVelocity(void* rcx, const Vec3& vecAbsVelocity)
 {
-	UNLOAD_RETURN(CBaseEntity_SetAbsVelocity, void, rcx, std::ref(vecAbsVelocity));
-
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwDesired = S::CBasePlayer_PostDataUpdate_SetAbsVelocity_Call();
 
@@ -379,8 +351,6 @@ void __fastcall CBaseEntity_SetAbsVelocity(void* rcx, const Vec3& vecAbsVelocity
 
 const Vec3* __fastcall CBaseEntity_WorldSpaceCenter(void* rcx)
 {
-	UNLOAD_RETURN(CBaseEntity_WorldSpaceCenter, const Vec3*, rcx);
-
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwDesired = S::CDamageAccountPanel_DisplayDamageFeedback_WorldSpaceCenter_Call();
 
@@ -390,8 +360,6 @@ const Vec3* __fastcall CBaseEntity_WorldSpaceCenter(void* rcx)
 /*
 void __fastcall CBaseHudChat_StartMessageMode(void* rcx, int iMessageModeType)
 {
-	UNLOAD_RETURN(CBaseHudChat_StartMessageMode, void, rcx, iMessageModeType);
-
 	CALL_ORIGINAL(CBaseHudChat_StartMessageMode, void, rcx, iMessageModeType);
 
 	if (iMessageModeType && SDK::StdRandomInt(0, 69) < 5)
@@ -423,8 +391,6 @@ void __fastcall CBaseHudChat_StartMessageMode(void* rcx, int iMessageModeType)
 
 void __fastcall CBaseHudChatLine_InsertAndColorizeText(void* rcx, wchar_t* buf, int clientIndex)
 {
-	UNLOAD_RETURN(CBaseHudChatLine_InsertAndColorizeText, void, rcx, buf, clientIndex);
-
 	std::string sMessage = SDK::ConvertWideToUTF8(buf);
 
 	if (clientIndex)
@@ -512,8 +478,6 @@ void __fastcall CBaseHudChatLine_InsertAndColorizeText(void* rcx, wchar_t* buf, 
 
 void __fastcall CBasePlayer_CalcObserverView(void* rcx, Vector& eyeOrigin, QAngle& eyeAngles, float& fov)
 {
-	UNLOAD_RETURN(CBasePlayer_CalcObserverView, void, rcx, std::ref(eyeOrigin), std::ref(eyeAngles), std::ref(fov));
-
 	if (!F::Spectate.HasTarget())
 		return CALL_ORIGINAL(CBasePlayer_CalcObserverView, void, rcx, std::ref(eyeOrigin), std::ref(eyeAngles), std::ref(fov));
 
@@ -530,8 +494,6 @@ void __fastcall CBasePlayer_CalcObserverView(void* rcx, Vector& eyeOrigin, QAngl
 
 void __fastcall CBasePlayer_CalcView(void* rcx, Vector& eyeOrigin, QAngle& eyeAngles, float& zNear, float& zFar, float& fov)
 {
-	UNLOAD_RETURN(CBasePlayer_CalcView, void, rcx, std::ref(eyeOrigin), std::ref(eyeAngles), std::ref(zNear), std::ref(zFar), std::ref(fov));
-
 	if (!Vars::Visuals::Removals::ViewPunch.Value && !F::Spectate.HasTarget())
 		return CALL_ORIGINAL(CBasePlayer_CalcView, void, rcx, std::ref(eyeOrigin), std::ref(eyeAngles), std::ref(zNear), std::ref(zFar), std::ref(fov));
 
@@ -545,8 +507,6 @@ void __fastcall CBasePlayer_CalcView(void* rcx, Vector& eyeOrigin, QAngle& eyeAn
 
 void __fastcall CTFPlayer_HandleTaunting(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayer_HandleTaunting, void, rcx);
-
 	if (!F::Spectate.HasTarget())
 		return CALL_ORIGINAL(CTFPlayer_HandleTaunting, void, rcx);
 
@@ -555,8 +515,6 @@ void __fastcall CTFPlayer_HandleTaunting(void* rcx)
 
 Vector __fastcall CThirdPersonManager_GetFinalCameraOffset(void* rcx)
 {
-	UNLOAD_RETURN(CThirdPersonManager_GetFinalCameraOffset, Vector, rcx);
-
 	if (!F::Spectate.HasTarget())
 		return CALL_ORIGINAL(CThirdPersonManager_GetFinalCameraOffset, Vector, rcx);
 
@@ -569,8 +527,6 @@ Vector __fastcall CThirdPersonManager_GetFinalCameraOffset(void* rcx)
 
 void __fastcall CBaseViewModel_CalcViewModelView(void* rcx, CBasePlayer* owner, /*const*/ Vector& eyePosition, /*const*/ QAngle& eyeAngles)
 {
-	UNLOAD_RETURN(CBaseViewModel_CalcViewModelView, void, rcx, owner, std::ref(eyePosition), std::ref(eyeAngles));
-
 	Vec3 vOffset = { Vars::Visuals::Viewmodel::OffsetX.Value, Vars::Visuals::Viewmodel::OffsetY.Value, Vars::Visuals::Viewmodel::OffsetZ.Value };
 	Vec3 vAngles = { Vars::Visuals::Viewmodel::Pitch.Value, Vars::Visuals::Viewmodel::Yaw.Value, Vars::Visuals::Viewmodel::Roll.Value };
 	if (!Vars::Visuals::Viewmodel::ViewmodelAim.Value && vOffset.IsZero() && vAngles.IsZero() || Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
@@ -608,8 +564,6 @@ void __fastcall CBaseViewModel_CalcViewModelView(void* rcx, CBasePlayer* owner, 
 
 void __fastcall CBasePlayer_CalcViewModelView(void* rcx, /*const*/ Vector& eyeOrigin, /*const*/ QAngle& eyeAngles)
 {
-	UNLOAD_RETURN(CBasePlayer_CalcViewModelView, void, rcx, std::ref(eyeOrigin), std::ref(eyeAngles));
-
 	Vector vOldEyeOrigin = eyeOrigin, vOldEyeAngles = eyeAngles;
 	CALL_ORIGINAL(CBasePlayer_CalcViewModelView, void, rcx, std::ref(eyeOrigin), std::ref(eyeAngles));
 	eyeOrigin = vOldEyeOrigin, eyeAngles = vOldEyeAngles;
@@ -617,8 +571,6 @@ void __fastcall CBasePlayer_CalcViewModelView(void* rcx, /*const*/ Vector& eyeOr
 
 void __fastcall CBasePlayer_ItemPostFrame(void* rcx)
 {
-	UNLOAD_RETURN(CBasePlayer_ItemPostFrame, void, rcx);
-
 	auto pLocal = reinterpret_cast<CTFPlayer*>(rcx);
 	auto pWeapon = H::Entities.GetWeapon();
 	if (!pWeapon)
@@ -671,15 +623,11 @@ void __fastcall CBasePlayer_ItemPostFrame(void* rcx)
 
 bool __fastcall CBaseViewModel_ShouldFlipViewModel(void* rcx)
 {
-	UNLOAD_RETURN(CBaseViewModel_ShouldFlipViewModel, bool, rcx);
-
 	return G::FlipViewmodels = CALL_ORIGINAL(CBaseViewModel_ShouldFlipViewModel, bool, rcx);
 }
 
 void __fastcall Cbuf_ExecuteCommand(CCommand& args, cmd_source_t source)
 {
-	UNLOAD_RETURN(Cbuf_ExecuteCommand, void, std::ref(args), source);
-
 	if (args.ArgC())
 	{
 		const char* sCommand = args[0];
@@ -751,8 +699,6 @@ void __fastcall Cbuf_ExecuteCommand(CCommand& args, cmd_source_t source)
 
 bool __fastcall CClientModeShared_DoPostScreenSpaceEffects(void* rcx, const CViewSetup* pSetup)
 {
-	UNLOAD_RETURN(CClientModeShared_DoPostScreenSpaceEffects, bool, rcx, pSetup);
-
 	if (Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return CALL_ORIGINAL(CClientModeShared_DoPostScreenSpaceEffects, bool, rcx, pSetup);
 
@@ -798,8 +744,6 @@ void __fastcall CClientModeShared_OverrideView(void* rcx, CViewSetup* pView)
 
 bool __fastcall CClientModeShared_ShouldDrawViewModel(void* rcx)
 {
-	UNLOAD_RETURN(CClientModeShared_ShouldDrawViewModel, bool, rcx);
-
 	if (Vars::Visuals::UI::ZoomFieldOfView.Value)
 	{
 		auto pLocal = H::Entities.GetLocal();
@@ -812,16 +756,12 @@ bool __fastcall CClientModeShared_ShouldDrawViewModel(void* rcx)
 
 float __fastcall CClientState_GetClientInterpAmount(void* rcx)
 {
-	UNLOAD_RETURN(CClientState_GetClientInterpAmount, float, rcx);
-
 	G::Lerp = CALL_ORIGINAL(CClientState_GetClientInterpAmount, float, rcx);
 	return 0.f;
 }
 
 bool __fastcall CClientState_ProcessFixAngle(void* rcx, SVC_FixAngle* msg)
 {
-	UNLOAD_RETURN(CClientState_ProcessFixAngle, bool, rcx, msg);
-
 	if (Vars::Visuals::Removals::AngleForcing.Value)
 		return false;
 
@@ -934,8 +874,6 @@ void __fastcall CGlowObjectManager_RenderGlowEffects(CGlowObjectManager* rcx, co
 
 void __fastcall CHLClient_CreateMove(void* rcx, int sequence_number, float input_sample_frametime, bool active)
 {
-	UNLOAD_RETURN(CHLClient_CreateMove, void, rcx, sequence_number, input_sample_frametime, active);
-
 	CALL_ORIGINAL(CHLClient_CreateMove, void, rcx, sequence_number, input_sample_frametime, active);
 
 	auto pLocal = H::Entities.GetLocal();
@@ -977,8 +915,6 @@ void __fastcall CHLClient_CreateMove(void* rcx, int sequence_number, float input
 
 bool __fastcall CHLClient_DispatchUserMessage(void* rcx, UserMessageType type, bf_read& msgData)
 {
-	UNLOAD_RETURN(CHLClient_DispatchUserMessage, bool, rcx, type, std::ref(msgData));
-
 	auto bufData = reinterpret_cast<const char*>(msgData.m_pData);
 	msgData.SetAssertOnOverflow(false);
 	msgData.Seek(0);
@@ -1091,7 +1027,8 @@ bool __fastcall CHLClient_DispatchUserMessage(void* rcx, UserMessageType type, b
 
 void __fastcall CHLClient_FrameStageNotify(void* rcx, ClientFrameStage_t curStage)
 {
-	UNLOAD_RETURN(CHLClient_FrameStageNotify, void, rcx, curStage);
+	if(G::Unload)
+		return CALL_ORIGINAL(CHLClient_FrameStageNotify, void, rcx, curStage);
 
 	CALL_ORIGINAL(CHLClient_FrameStageNotify, void, rcx, curStage);
 
@@ -1153,8 +1090,6 @@ void __fastcall CHLClient_FrameStageNotify(void* rcx, ClientFrameStage_t curStag
 
 void __fastcall CHLClient_LevelShutdown(void* rcx)
 {
-	UNLOAD_RETURN(CHLClient_LevelShutdown, void, rcx);
-
 	H::Entities.Clear(true);
 	F::EnginePrediction.Unload();
 	F::Spectate.Reset();
@@ -1164,8 +1099,6 @@ void __fastcall CHLClient_LevelShutdown(void* rcx)
 
 void __fastcall CHLTVCamera_CalcView(void* rcx, Vector& origin, QAngle& angles, float& fov)
 {
-	UNLOAD_RETURN(CHLTVCamera_CalcView, void, rcx, std::ref(origin), std::ref(angles), std::ref(fov));
-
 	auto pHLTVCamera = reinterpret_cast<CHLTVCamera*>(rcx);
 
 	if (F::Spectate.HasTarget())
@@ -1188,8 +1121,6 @@ void __fastcall CHLTVCamera_CalcView(void* rcx, Vector& origin, QAngle& angles, 
 
 CBaseEntity* __fastcall CHLTVCamera_GetPrimaryTarget(void* rcx)
 {
-	UNLOAD_RETURN(CHLTVCamera_GetPrimaryTarget, CBaseEntity*, rcx);
-
 	auto pHLTVCamera = reinterpret_cast<CHLTVCamera*>(rcx);
 
 	if (F::Spectate.HasTarget())
@@ -1200,8 +1131,6 @@ CBaseEntity* __fastcall CHLTVCamera_GetPrimaryTarget(void* rcx)
 
 int __fastcall CHLTVCamera_GetMode(void* rcx)
 {
-	UNLOAD_RETURN(CHLTVCamera_GetMode, int, rcx);
-
 	auto pHLTVCamera = reinterpret_cast<CHLTVCamera*>(rcx);
 
 	if (F::Spectate.HasTarget())
@@ -1212,8 +1141,6 @@ int __fastcall CHLTVCamera_GetMode(void* rcx)
 
 int* __fastcall CHudChat_GetClientColor(void* rcx, int* iOutColor, int clientIndex)
 {
-	UNLOAD_RETURN(CHudChat_GetClientColor, int*, rcx, iOutColor, clientIndex);
-	
 	static thread_local int iChatColor;
 
 	if (!Vars::Visuals::UI::ChatColors.Value || clientIndex == 0 || !F::Groups.GroupsActive())
@@ -1244,8 +1171,6 @@ int* __fastcall CHudChat_GetClientColor(void* rcx, int* iOutColor, int clientInd
 
 void __fastcall CHudCrosshair_GetDrawPosition(float* pX, float* pY, bool* pbBehindCamera, Vec3 angleCrosshairOffset)
 {
-	UNLOAD_RETURN(CHudCrosshair_GetDrawPosition, void, pX, pY, pbBehindCamera, angleCrosshairOffset);
-
 	if (!Vars::Visuals::Viewmodel::CrosshairAim.Value && !Vars::Visuals::Thirdperson::Crosshair.Value
 		|| Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return CALL_ORIGINAL(CHudCrosshair_GetDrawPosition, void, pX, pY, pbBehindCamera, angleCrosshairOffset);
@@ -1297,22 +1222,16 @@ void __fastcall CHudCrosshair_GetDrawPosition(float* pX, float* pY, bool* pbBehi
 
 CUserCmd* __fastcall CInput_GetUserCmd(void* rcx, int sequence_number)
 {
-	UNLOAD_RETURN(CInput_GetUserCmd, CUserCmd*, rcx, sequence_number);
-
 	return &I::Input->m_pCommands[sequence_number % MULTIPLAYER_BACKUP];
 }
 
 void __fastcall CInput_ValidateUserCmd(void* rcx, CUserCmd* usercmd, int sequence_number)
 {
-	UNLOAD_RETURN(CInput_ValidateUserCmd, void, rcx, usercmd, sequence_number);
-
 	return;
 }
 
 bool __fastcall CInventoryManager_ShowItemsPickedUp(void* rcx, bool bForce, bool bReturnToGame, bool bNoPanel)
 {
-	UNLOAD_RETURN(CInventoryManager_ShowItemsPickedUp, bool, rcx, bForce, bReturnToGame, bNoPanel);
-
 	if (Vars::Misc::Automation::AcceptItemDrops.Value)
 	{
 		CALL_ORIGINAL(CInventoryManager_ShowItemsPickedUp, bool, rcx, true, true, true);
@@ -1323,8 +1242,6 @@ bool __fastcall CInventoryManager_ShowItemsPickedUp(void* rcx, bool bForce, bool
 
 void __fastcall CL_CheckForPureServerWhitelist(void** pFilesToReload)
 {
-	UNLOAD_RETURN(CL_CheckForPureServerWhitelist, void, pFilesToReload);
-
 	if (Vars::Misc::Exploits::PureBypass.Value)
 		return;
 
@@ -1333,7 +1250,8 @@ void __fastcall CL_CheckForPureServerWhitelist(void** pFilesToReload)
 
 void __fastcall CL_Move(float accumulated_extra_samples, bool bFinalTick)
 {
-	UNLOAD_RETURN(CL_Move, void, accumulated_extra_samples, bFinalTick);
+	if (G::Unload)
+		return CALL_ORIGINAL(CL_Move, void, accumulated_extra_samples, bFinalTick);
 
 	F::NetworkFix.FixInputDelay(bFinalTick);
 	F::Backtrack.m_iTickCount = I::GlobalVars->tickcount + 1;
@@ -1357,8 +1275,6 @@ void __fastcall CL_Move(float accumulated_extra_samples, bool bFinalTick)
 
 bool __fastcall CL_ProcessPacketEntities(SVC_PacketEntities* entmsg)
 {
-	UNLOAD_RETURN(CL_ProcessPacketEntities, bool, entmsg);
-
 	if (entmsg->m_bIsDelta) // we won't need to restore
 		return CALL_ORIGINAL(CL_ProcessPacketEntities, bool, entmsg);
 
@@ -1417,16 +1333,12 @@ bool __fastcall CL_ProcessPacketEntities(SVC_PacketEntities* entmsg)
 
 void __fastcall CL_ReadPackets(bool bFinalTick)
 {
-	UNLOAD_RETURN(CL_ReadPackets, void, bFinalTick);
-
 	if (F::NetworkFix.ShouldReadPackets())
 		CALL_ORIGINAL(CL_ReadPackets, void, bFinalTick);
 }
 
 bool __fastcall ClientModeTFNormal_BIsFriendOrPartyMember(void* rcx, CBaseEntity* pEntity)
 {
-	UNLOAD_RETURN(ClientModeTFNormal_BIsFriendOrPartyMember, bool, rcx, pEntity);
-
 	static const auto dwDesired = S::CHudInspectPanel_UserCmd_InspectTarget_BIsFriendOrPartyMember_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -1437,8 +1349,6 @@ bool __fastcall ClientModeTFNormal_BIsFriendOrPartyMember(void* rcx, CBaseEntity
 
 void __fastcall CMatchInviteNotification_OnTick(void* rcx)
 {
-	UNLOAD_RETURN(CMatchInviteNotification_OnTick, void, rcx);
-
 	if (Vars::Misc::Queueing::FreezeQueue.Value)
 		*reinterpret_cast<double*>(uintptr_t(rcx) + 616) = 0.0;
 
@@ -1447,8 +1357,6 @@ void __fastcall CMatchInviteNotification_OnTick(void* rcx)
 
 void __fastcall CMaterial_Uncache(IMaterial* rcx, bool bPreserveVars)
 {
-	UNLOAD_RETURN(CMaterial_Uncache, void, rcx, bPreserveVars);
-
 	if (F::Materials.m_mMatList.contains(rcx))
 		return;
 
@@ -1457,8 +1365,6 @@ void __fastcall CMaterial_Uncache(IMaterial* rcx, bool bPreserveVars)
 
 int __fastcall CNetChannel_SendDatagram(CNetChannel* pNetChan, bf_write* datagram)
 {
-	UNLOAD_RETURN(CNetChannel_SendDatagram, int, pNetChan, datagram);
-
 	if (datagram)
 		return CALL_ORIGINAL(CNetChannel_SendDatagram, int, pNetChan, datagram);
 
@@ -1470,8 +1376,6 @@ int __fastcall CNetChannel_SendDatagram(CNetChannel* pNetChan, bf_write* datagra
 
 bool __fastcall CNetChannel_SendNetMsg(CNetChannel* pNetChan, INetMessage& msg, bool bForceReliable, bool bVoice)
 {
-	UNLOAD_RETURN(CNetChannel_SendNetMsg, bool, pNetChan, std::ref(msg), bForceReliable, bVoice);
-
 	switch (msg.GetType())
 	{
 	case net_SetConVar:
@@ -1590,8 +1494,6 @@ bool __fastcall CNetChannel_SendNetMsg(CNetChannel* pNetChan, INetMessage& msg, 
 
 void __fastcall COPRenderSprites_Render(void* rcx, IMatRenderContext* pRenderContext, CParticleCollection* pParticles, void* pContext)
 {
-	UNLOAD_RETURN(COPRenderSprites_Render, void, rcx, pRenderContext, pParticles, pContext);
-
 	if (Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return CALL_ORIGINAL(COPRenderSprites_Render, void, rcx, pRenderContext, pParticles, pContext);
 
@@ -1689,8 +1591,6 @@ static inline CBaseEntity* FindOwner(void* rcx)
 
 int __fastcall CNewParticleEffect_DrawModel(void* rcx, int flags)
 {
-	UNLOAD_RETURN(CNewParticleEffect_DrawModel, int, rcx, flags);
-
 	if (Vars::Visuals::World::ParticleModulationStyle.Value != Vars::Visuals::World::ParticleModulationStyleEnum::GroupColored)
 		return CALL_ORIGINAL(CNewParticleEffect_DrawModel, int, rcx, flags);
 
@@ -1825,8 +1725,6 @@ int __fastcall CNewParticleEffect_DrawModel(void* rcx, int flags)
 
 void __fastcall CNewParticleEffect_Deconstructor(void* rcx)
 {
-	UNLOAD_RETURN(CNewParticleEffect_Deconstructor, void, rcx);
-
 	CALL_ORIGINAL(CNewParticleEffect_Deconstructor, void, rcx);
 
 	if (Vars::Visuals::World::ParticleModulationStyle.Value != Vars::Visuals::World::ParticleModulationStyleEnum::GroupColored)
@@ -1853,8 +1751,6 @@ void __fastcall CNewParticleEffect_Deconstructor(void* rcx)
 
 void __fastcall COPRenderSprites_RenderSpriteCard(void* rcx, void* meshBuilder, void* pCtx, SpriteRenderInfo_t& info, int hParticle, ParticleRenderData_t* pSortList, void* pCamera)
 {
-	UNLOAD_RETURN(COPRenderSprites_RenderSpriteCard, void, rcx, meshBuilder, pCtx, std::ref(info), hParticle, pSortList, pCamera);
-
 	if (!(Vars::Visuals::World::Modulations.Value & Vars::Visuals::World::ModulationsEnum::Particle)
 		|| Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return CALL_ORIGINAL(COPRenderSprites_RenderSpriteCard, void, rcx, meshBuilder, pCtx, std::ref(info), hParticle, pSortList, pCamera);
@@ -1888,8 +1784,6 @@ void __fastcall COPRenderSprites_RenderSpriteCard(void* rcx, void* meshBuilder, 
 
 void __fastcall COPRenderSprites_RenderTwoSequenceSpriteCard(void* rcx, void* meshBuilder, void* pCtx, SpriteRenderInfo_t& info, int hParticle, ParticleRenderData_t* pSortList, void* pCamera)
 {
-	UNLOAD_RETURN(COPRenderSprites_RenderTwoSequenceSpriteCard, void, rcx, meshBuilder, pCtx, std::ref(info), hParticle, pSortList, pCamera);
-
 	if (!(Vars::Visuals::World::Modulations.Value & Vars::Visuals::World::ModulationsEnum::Particle)
 		|| Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return CALL_ORIGINAL(COPRenderSprites_RenderTwoSequenceSpriteCard, void, rcx, meshBuilder, pCtx, std::ref(info), hParticle, pSortList, pCamera);
@@ -1923,8 +1817,6 @@ void __fastcall COPRenderSprites_RenderTwoSequenceSpriteCard(void* rcx, void* me
 
 void __fastcall CParticleCollection_Render(void* rcx, IMatRenderContext* pRenderContext, bool bTranslucentOnly, void* pCameraObject)
 {
-	UNLOAD_RETURN(CParticleCollection_Render, void, rcx, pRenderContext, bTranslucentOnly, pCameraObject);
-
 	auto pParticleCollection = reinterpret_cast<CParticleCollection*>(rcx);
 	if (!pParticleCollection || !pOwnerEnt)
 		return CALL_ORIGINAL(CParticleCollection_Render, void, rcx, pRenderContext, bTranslucentOnly, pCameraObject);
@@ -1949,8 +1841,6 @@ void __fastcall CParticleCollection_Render(void* rcx, IMatRenderContext* pRender
 
 void* __fastcall CParticleProperty_Create_Name(void* rcx, const char* pszParticleName, ParticleAttachment_t iAttachType, const char* pszAttachmentName)
 {
-	UNLOAD_RETURN(CParticleProperty_Create_Name, void*, rcx, pszParticleName, iAttachType, pszAttachmentName);
-
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwUpdateEffects1 = S::CWeaponMedigun_UpdateEffects_CreateName_Call1();
 	const auto dwUpdateEffects2 = S::CWeaponMedigun_UpdateEffects_CreateName_Call2();
@@ -2029,8 +1919,6 @@ void* __fastcall CParticleProperty_Create_Name(void* rcx, const char* pszParticl
 
 void* CParticleProperty_Create_Point(void* rcx, const char* pszParticleName, ParticleAttachment_t iAttachType, int iAttachmentPoint, Vector vecOriginOffset)
 {
-	UNLOAD_RETURN(CParticleProperty_Create_Point, void*, rcx, pszParticleName, iAttachType, iAttachmentPoint, vecOriginOffset);
-
 	if (pszParticleName)
 	{
 		switch (FNV1A::Hash32(pszParticleName))
@@ -2168,16 +2056,12 @@ void __fastcall CPhysicsObject_OutputDebugInfo(void* rcx)
 
 const char* CPlayerResource_GetPlayerName(void* rcx, int iIndex)
 {
-	UNLOAD_RETURN(CPlayerResource_GetPlayerName, const char*, rcx, iIndex);
-
 	return F::PlayerUtils.GetPlayerName(iIndex, CALL_ORIGINAL(CPlayerResource_GetPlayerName, const char*, rcx, iIndex));
 }
 
 #ifdef ANTIAUTOBALANCETESTING
 void __fastcall CPrediction_PostEntityPacketReceived()
 {
-	UNLOAD_RETURN(CPrediction_PostEntityPacketReceived, void);
-
 	CALL_ORIGINAL(CPrediction_PostEntityPacketReceived, void);
 	F::AntiAutobalance.Run();
 }
@@ -2186,8 +2070,6 @@ void __fastcall CPrediction_PostEntityPacketReceived()
 static std::vector<TickbaseFix_t> s_vTickbaseFixes = {};
 void __fastcall CPrediction_RunSimulation(void* rcx, int current_command, float curtime, CUserCmd* cmd, CTFPlayer* localPlayer)
 {
-	UNLOAD_RETURN(CPrediction_RunSimulation, void, rcx, current_command, curtime, cmd, localPlayer);
-
 	if (F::Ticks.m_bShifting && F::Ticks.m_iShiftedTicks + 1 == F::Ticks.m_iShiftStart)
 	{
 		s_vTickbaseFixes.emplace_back(G::CurrentUserCmd, I::ClientState->lastoutgoingcommand, F::Ticks.m_iShiftStart - F::Ticks.m_iShiftedGoal);
@@ -2220,8 +2102,6 @@ void __fastcall CPrediction_RunSimulation(void* rcx, int current_command, float 
 
 void __fastcall CProxyAnimatedWeaponSheen_OnBind(CProxyAnimatedWeaponSheen* rcx, void* pEntity)
 {
-	UNLOAD_RETURN(CProxyAnimatedWeaponSheen_OnBind, void, rcx, pEntity);
-
 	CALL_ORIGINAL(CProxyAnimatedWeaponSheen_OnBind, void, rcx, pEntity);
 
 	if (!(Vars::Visuals::World::Modulations.Value & Vars::Visuals::World::ModulationsEnum::KillstreakSheen)
@@ -2245,8 +2125,6 @@ void __fastcall CProxyAnimatedWeaponSheen_OnBind(CProxyAnimatedWeaponSheen* rcx,
 
 void __fastcall CRendering3dView_EnableWorldFog()
 {
-	UNLOAD_RETURN(CRendering3dView_EnableWorldFog, void);
-
 	if (!(Vars::Visuals::World::Modulations.Value & Vars::Visuals::World::ModulationsEnum::Fog) || I::EngineClient->IsTakingScreenshot() && Vars::Visuals::UI::CleanScreenshots.Value)
 		return CALL_ORIGINAL(CRendering3dView_EnableWorldFog, void);
 
@@ -2271,8 +2149,6 @@ void __fastcall CRendering3dView_EnableWorldFog()
 
 void __fastcall CSequenceTransitioner_CheckForSequenceChange(void* rcx, CStudioHdr* hdr, int nCurSequence, bool bForceNewSequence, bool bInterpolate)
 {
-	UNLOAD_RETURN(CSequenceTransitioner_CheckForSequenceChange, void, rcx, hdr, nCurSequence, bForceNewSequence, bInterpolate);
-
 	if (Vars::Misc::Game::AccuracyImprovements.Value)
 		bInterpolate = false;
 
@@ -2281,8 +2157,6 @@ void __fastcall CSequenceTransitioner_CheckForSequenceChange(void* rcx, CStudioH
 
 void __fastcall CSkyboxView_Enable3dSkyboxFog(void* rcx)
 {
-	UNLOAD_RETURN(CSkyboxView_Enable3dSkyboxFog, void, rcx);
-
 	if (!(Vars::Visuals::World::Modulations.Value & Vars::Visuals::World::ModulationsEnum::Fog) || I::EngineClient->IsTakingScreenshot() && Vars::Visuals::UI::CleanScreenshots.Value)
 		return CALL_ORIGINAL(CSkyboxView_Enable3dSkyboxFog, void, rcx);
 
@@ -2307,8 +2181,6 @@ void __fastcall CSkyboxView_Enable3dSkyboxFog(void* rcx)
 
 void __fastcall CSniperDot_ClientThink(void* rcx)
 {
-	UNLOAD_RETURN(CSniperDot_ClientThink, void, rcx);
-
 	const auto pGameRules = I::TFGameRules();
 	if (!pGameRules)
 		return;
@@ -2359,8 +2231,6 @@ static Vec3 s_vEyePosition;
 static Vec3 s_vEyeAngles;
 bool __fastcall CSniperDot_GetRenderingPositions(void* rcx, CTFPlayer* pPlayer, Vec3& vecAttachment, Vec3& vecEndPos, float& flSize)
 {
-	UNLOAD_RETURN(CSniperDot_GetRenderingPositions, bool, rcx, pPlayer, std::ref(vecAttachment), std::ref(vecEndPos), std::ref(flSize));
-
 	if (pPlayer && pPlayer->entindex() != I::EngineClient->GetLocalPlayer())
 	{
 		auto pDot = reinterpret_cast<CSniperDot*>(rcx);
@@ -2374,8 +2244,6 @@ bool __fastcall CSniperDot_GetRenderingPositions(void* rcx, CTFPlayer* pPlayer, 
 
 Vec3* __fastcall CBasePlayer_EyePosition(void* rcx, void* rdx)
 {
-	UNLOAD_RETURN(CBasePlayer_EyePosition, Vec3*, rcx, rdx);
-
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwDesired = S::CSniperDot_GetRenderingPositions_EyePosition_Call();
 
@@ -2387,8 +2255,6 @@ Vec3* __fastcall CBasePlayer_EyePosition(void* rcx, void* rdx)
 
 Vec3* __fastcall CTFPlayer_EyeAngles(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayer_EyeAngles, Vec3*, rcx);
-
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwDesired = S::CSniperDot_GetRenderingPositions_EyeAngles_Call();
 
@@ -2400,8 +2266,6 @@ Vec3* __fastcall CTFPlayer_EyeAngles(void* rcx)
 
 void __fastcall CSoundEmitterSystem_EmitSound(void* rcx, IRecipientFilter& filter, int entindex, const EmitSound_t& ep)
 {
-	UNLOAD_RETURN(CSoundEmitterSystem_EmitSound, void, rcx, std::ref(filter), entindex, std::ref(ep));
-
 	if (ShouldBlockSound(ep.m_pSoundName))
 		return;
 
@@ -2410,8 +2274,6 @@ void __fastcall CSoundEmitterSystem_EmitSound(void* rcx, IRecipientFilter& filte
 
 void __fastcall CBaseEntity_EmitSound(void* rcx, const char* soundname, float soundtime, float* duration)
 {
-	UNLOAD_RETURN(CBaseEntity_EmitSound, void, rcx, soundname, soundtime, duration);
-
 	if (soundname)
 	{
 		switch (FNV1A::Hash32(soundname))
@@ -2431,8 +2293,6 @@ void __fastcall CBaseEntity_EmitSound(void* rcx, const char* soundname, float so
 /*
 int __fastcall S_StartDynamicSound(StartSoundParams_t& params)
 {
-	UNLOAD_RETURN(S_StartDynamicSound, int, params);
-	
 	H::Entities.ManualNetwork(params);
 	if (params.pSfx && ShouldBlockSound(params.pSfx->getname()))
 		return 0;
@@ -2443,8 +2303,6 @@ int __fastcall S_StartDynamicSound(StartSoundParams_t& params)
 
 int __fastcall S_StartSound(StartSoundParams_t& params)
 {
-	UNLOAD_RETURN(S_StartSound, int, std::ref(params));
-
 	if (!params.staticsound)
 	{
 		H::Entities.ManualNetwork(params);
@@ -2462,8 +2320,6 @@ int __fastcall S_StartSound(StartSoundParams_t& params)
 /*
 int __fastcall CSpriteTrail_DrawModel(void* rcx, int flags)
 {
-	UNLOAD_RETURN(CSpriteTrail_DrawModel, int, rcx, flags);
-
 	// clean screenshots wont do anything if we set m_clrRender directly
 	if (!(Vars::Visuals::World::Modulations.Value & Vars::Visuals::World::ModulationsEnum::Particle))
 		return CALL_ORIGINAL(CSpriteTrail_DrawModel, int, rcx, flags);
@@ -2501,8 +2357,6 @@ int __fastcall CSpriteTrail_DrawModel(void* rcx, int flags)
 
 void __fastcall CStaticPropMgr_ComputePropOpacity(void* rcx, CStaticProp* pProp)
 {
-	UNLOAD_RETURN(CStaticPropMgr_ComputePropOpacity, void, rcx, pProp);
-
 	if (Vars::Visuals::World::NoPropFade.Value && pProp)
 	{
 		pProp->m_Alpha = 255;
@@ -2515,8 +2369,6 @@ void __fastcall CStaticPropMgr_ComputePropOpacity(void* rcx, CStaticProp* pProp)
 static bool s_bDrawingProps = false;
 void __fastcall CStaticPropMgr_DrawStaticProps(void* rcx, IClientRenderable** pProps, int count, bool bShadowDepth, bool drawVCollideWireframe)
 {
-	UNLOAD_RETURN(CStaticPropMgr_DrawStaticProps, void, rcx, pProps, count, bShadowDepth, drawVCollideWireframe);
-
 	s_bDrawingProps = true;
 	CALL_ORIGINAL(CStaticPropMgr_DrawStaticProps, void, rcx, pProps, count, bShadowDepth, drawVCollideWireframe);
 	s_bDrawingProps = false;
@@ -2524,8 +2376,6 @@ void __fastcall CStaticPropMgr_DrawStaticProps(void* rcx, IClientRenderable** pP
 
 void __fastcall CStudioRender_SetColorModulation(void* rcx, const float* pColor)
 {
-	UNLOAD_RETURN(CStudioRender_SetColorModulation, void, rcx, pColor);
-
 	if (!s_bDrawingProps || !(Vars::Visuals::World::Modulations.Value & Vars::Visuals::World::ModulationsEnum::Prop)
 		|| Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return CALL_ORIGINAL(CStudioRender_SetColorModulation, void, rcx, pColor);
@@ -2540,8 +2390,6 @@ void __fastcall CStudioRender_SetColorModulation(void* rcx, const float* pColor)
 
 void __fastcall CStudioRender_SetAlphaModulation(void* rcx, float flAlpha)
 {
-	UNLOAD_RETURN(CStudioRender_SetAlphaModulation, void, rcx, flAlpha);
-
 	if (!s_bDrawingProps || !(Vars::Visuals::World::Modulations.Value & Vars::Visuals::World::ModulationsEnum::Prop)
 		|| Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return CALL_ORIGINAL(CStudioRender_SetAlphaModulation, void, rcx, flAlpha);
@@ -2552,8 +2400,6 @@ void __fastcall CStudioRender_SetAlphaModulation(void* rcx, float flAlpha)
 /*
 void __fastcall CStudioRender_DrawModelStaticProp(void* rcx, const DrawModelState_t& pState, const matrix3x4& modelToWorld, int flags)
 {
-	UNLOAD_RETURN(CStudioRender_DrawModelStaticProp, void, rcx, std::ref(pState), std::ref(modelToWorld), flags);
-
 	if (Vars::Visuals::World::NearPropFade.Value)
 	{
 		if (auto pLocal = H::Entities.GetLocal())
@@ -2575,8 +2421,6 @@ void __fastcall CStudioRender_DrawModelStaticProp(void* rcx, const DrawModelStat
 
 void __fastcall CTFBadgePanel_SetupBadge(void* rcx, const IMatchGroupDescription* pMatchDesc, /*const*/ LevelInfo_t& levelInfo, const CSteamID& steamID)
 {
-	UNLOAD_RETURN(CTFBadgePanel_SetupBadge, void, rcx, pMatchDesc, std::ref(levelInfo), std::ref(steamID));
-
 	if (!Vars::Visuals::UI::StreamerMode.Value)
 		return CALL_ORIGINAL(CTFBadgePanel_SetupBadge, void, rcx, pMatchDesc, std::ref(levelInfo), std::ref(steamID));
 
@@ -2605,8 +2449,6 @@ void __fastcall CTFBadgePanel_SetupBadge(void* rcx, const IMatchGroupDescription
 static int s_iPlayerIndex;
 void __fastcall CTFClientScoreBoardDialog_UpdatePlayerAvatar(void* rcx, int playerIndex, KeyValues* kv)
 {
-	UNLOAD_RETURN(CTFClientScoreBoardDialog_UpdatePlayerAvatar, void, rcx, playerIndex, kv);
-
 	s_iPlayerIndex = playerIndex;
 
 	int iType = 0; F::PlayerUtils.GetPlayerName(playerIndex, nullptr, &iType);
@@ -2616,8 +2458,6 @@ void __fastcall CTFClientScoreBoardDialog_UpdatePlayerAvatar(void* rcx, int play
 
 void __fastcall CTFMatchSummary_UpdatePlayerAvatar(void* rcx, int playerIndex, KeyValues* kv)
 {
-	UNLOAD_RETURN(CTFMatchSummary_UpdatePlayerAvatar, void, rcx, playerIndex, kv);
-
 	int iType = 0; F::PlayerUtils.GetPlayerName(playerIndex, nullptr, &iType);
 	if (iType != 1)
 		CALL_ORIGINAL(CTFMatchSummary_UpdatePlayerAvatar, void, rcx, playerIndex, kv);
@@ -2625,8 +2465,6 @@ void __fastcall CTFMatchSummary_UpdatePlayerAvatar(void* rcx, int playerIndex, K
 
 void __fastcall CTFHudMannVsMachineScoreboard_UpdatePlayerAvatar(void* rcx, int playerIndex, KeyValues* kv)
 {
-	UNLOAD_RETURN(CTFHudMannVsMachineScoreboard_UpdatePlayerAvatar, void, rcx, playerIndex, kv);
-
 	int iType = 0; F::PlayerUtils.GetPlayerName(playerIndex, nullptr, &iType);
 	if (iType != 1)
 		CALL_ORIGINAL(CTFHudMannVsMachineScoreboard_UpdatePlayerAvatar, void, rcx, playerIndex, kv);
@@ -2634,8 +2472,6 @@ void __fastcall CTFHudMannVsMachineScoreboard_UpdatePlayerAvatar(void* rcx, int 
 
 void __fastcall CTFHudMatchStatus_UpdatePlayerAvatar(void* rcx, int playerIndex, KeyValues* kv)
 {
-	UNLOAD_RETURN(CTFHudMatchStatus_UpdatePlayerAvatar, void, rcx, playerIndex, kv);
-
 	int iType = 0; F::PlayerUtils.GetPlayerName(playerIndex, nullptr, &iType);
 	if (iType != 1)
 		CALL_ORIGINAL(CTFHudMatchStatus_UpdatePlayerAvatar, void, rcx, playerIndex, kv);
@@ -2643,8 +2479,6 @@ void __fastcall CTFHudMatchStatus_UpdatePlayerAvatar(void* rcx, int playerIndex,
 
 void __fastcall SectionedListPanel_SetItemFgColor(void* rcx, int itemID, Color_t color)
 {
-	UNLOAD_RETURN(SectionedListPanel_SetItemFgColor, void, rcx, itemID, color);
-
 	static const auto dwDesired = S::CTFClientScoreBoardDialog_UpdatePlayerList_SetItemFgColor_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -2666,8 +2500,6 @@ void __fastcall SectionedListPanel_SetItemFgColor(void* rcx, int itemID, Color_t
 
 bool __fastcall CTFGCClientSystem_UpdateAssignedLobby(void* rcx)
 {
-	UNLOAD_RETURN(CTFGCClientSystem_UpdateAssignedLobby, bool, rcx);
-
 	bool bReturn = CALL_ORIGINAL(CTFGCClientSystem_UpdateAssignedLobby, bool, rcx);
 
 	if (rcx && Vars::Misc::Game::F2PChatBypass.Value)
@@ -2678,8 +2510,6 @@ bool __fastcall CTFGCClientSystem_UpdateAssignedLobby(void* rcx)
 
 void __fastcall CTFInput_ApplyMouse(void* rcx, QAngle& viewangles, CUserCmd* cmd, float mouse_x, float mouse_y)
 {
-	UNLOAD_RETURN(CTFInput_ApplyMouse, void, rcx, std::ref(viewangles), cmd, mouse_x, mouse_y);
-
 	// we should maybe predict the shield cond for better accuracy
 
 	CALL_ORIGINAL(CTFInput_ApplyMouse, void, rcx, std::ref(viewangles), cmd, mouse_x, mouse_y);
@@ -2711,8 +2541,6 @@ void __fastcall CTFInput_ApplyMouse(void* rcx, QAngle& viewangles, CUserCmd* cmd
 
 float __fastcall CTFInput_CAM_CapYaw(void* rcx, float fVal)
 {
-	UNLOAD_RETURN(CTFInput_CAM_CapYaw, float, rcx, fVal);
-
 	if (!Vars::Misc::Movement::ShieldTurnRate.Value)
 		return CALL_ORIGINAL(CTFInput_CAM_CapYaw, float, rcx, fVal);
 
@@ -2721,8 +2549,6 @@ float __fastcall CTFInput_CAM_CapYaw(void* rcx, float fVal)
 
 void __fastcall CTFPlayer_AvoidPlayers(void* rcx, CUserCmd* pCmd)
 {
-	UNLOAD_RETURN(CTFPlayer_AvoidPlayers, void, rcx, pCmd);
-
 	if (Vars::Misc::Movement::NoPush.Value)
 		return;
 
@@ -2731,8 +2557,6 @@ void __fastcall CTFPlayer_AvoidPlayers(void* rcx, CUserCmd* pCmd)
 
 bool __fastcall CTFPlayer_BRenderAsZombie(void* rcx, bool bWeaponsCheck)
 {
-	UNLOAD_RETURN(CTFPlayer_BRenderAsZombie, bool, rcx, bWeaponsCheck);
-
 	static const auto dwDesired = S::CTFRagdoll_CreateTFRagdoll_BRenderAsZombie_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -2744,8 +2568,6 @@ bool __fastcall CTFPlayer_BRenderAsZombie(void* rcx, bool bWeaponsCheck)
 
 void __fastcall CTFPlayer_BuildTransformations(void* rcx, CStudioHdr* hdr, Vector* pos, Quaternion q[], const matrix3x4& cameraTransform, int boneMask, void* boneComputed)
 {
-	UNLOAD_RETURN(CTFPlayer_BuildTransformations, void, rcx, hdr, pos, q, std::ref(cameraTransform), boneMask, boneComputed);
-	
 	auto pPlayer = reinterpret_cast<CTFPlayer*>(rcx);
 	auto iOriginal = pPlayer->m_fFlags();
 	pPlayer->m_fFlags() &= ~FL_DUCKING;
@@ -2757,8 +2579,6 @@ void __fastcall CTFPlayer_BuildTransformations(void* rcx, CStudioHdr* hdr, Vecto
 
 void __fastcall CTFPlayer_ClientAdjustVOPitch(void* rcx, int& pitch)
 {
-	UNLOAD_RETURN(CTFPlayer_ClientAdjustVOPitch, void, rcx, std::ref(pitch));
-
 	if (S::IsLocalPlayerUsingVisionFilterFlags.Call<bool>(TF_VISION_FILTER_PYRO))
 		pitch *= Vars::Visuals::Effects::PyrovisionPitch.Value;
 	else
@@ -2767,8 +2587,6 @@ void __fastcall CTFPlayer_ClientAdjustVOPitch(void* rcx, int& pitch)
 
 void __fastcall CTFPlayer_DoAnimationEvent(CTFPlayer* rcx, PlayerAnimEvent_t event, int nData)
 {
-	UNLOAD_RETURN(CTFPlayer_DoAnimationEvent, void, rcx, event, nData);
-
 	if (rcx->entindex() != I::EngineClient->GetLocalPlayer())
 		return;
 
@@ -2777,8 +2595,6 @@ void __fastcall CTFPlayer_DoAnimationEvent(CTFPlayer* rcx, PlayerAnimEvent_t eve
 
 void __fastcall CTFPlayer_FireBullet(void* rcx, CBaseCombatWeapon* pWeapon, const FireBulletsInfo_t& info, bool bDoEffects, int nDamageType, int nCustomDamageType)
 {
-	UNLOAD_RETURN(CTFPlayer_FireBullet, void, rcx, pWeapon, std::ref(info), bDoEffects, nDamageType, nCustomDamageType);
-
 	auto pLocal = reinterpret_cast<CTFPlayer*>(rcx);
 	if (pLocal != H::Entities.GetLocal() || !pWeapon)
 		return CALL_ORIGINAL(CTFPlayer_FireBullet, void, rcx, pWeapon, std::ref(info), bDoEffects, nDamageType, nCustomDamageType);
@@ -2889,15 +2705,11 @@ void __fastcall CTFPlayer_FireBullet(void* rcx, CBaseCombatWeapon* pWeapon, cons
 
 float __fastcall CTFPlayer_GetMinFOV(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayer_GetMinFOV, float, rcx);
-
 	return 0.f;
 }
 
 bool __fastcall CTFPlayer_InSameDisguisedTeam(void* rcx, CBaseEntity* pEnt)
 {
-	UNLOAD_RETURN(CTFPlayer_InSameDisguisedTeam, bool, rcx, pEnt);
-
 	if (F::Spectate.HasTarget())
 		return true;
 
@@ -2906,8 +2718,6 @@ bool __fastcall CTFPlayer_InSameDisguisedTeam(void* rcx, CBaseEntity* pEnt)
 
 bool __fastcall CTFFreezePanel_ShouldDraw(void* rcx)
 {
-	UNLOAD_RETURN(CTFFreezePanel_ShouldDraw, bool, rcx);
-
 	if (F::Spectate.HasTarget())
 		return false;
 
@@ -2916,8 +2726,6 @@ bool __fastcall CTFFreezePanel_ShouldDraw(void* rcx)
 
 void __fastcall CTFFreezePanel_FireGameEvent(void* rcx, IGameEvent* event)
 {
-	UNLOAD_RETURN(CTFFreezePanel_FireGameEvent, void, rcx, event);
-
 	if (F::Spectate.HasTarget())
 		return;
 
@@ -2926,8 +2734,6 @@ void __fastcall CTFFreezePanel_FireGameEvent(void* rcx, IGameEvent* event)
 
 bool __fastcall CTFPlayer_IsPlayerClass(void* rcx, int iClass)
 {
-	UNLOAD_RETURN(CTFPlayer_IsPlayerClass, bool, rcx, iClass);
-
 	static const auto dwDesired = S::CDamageAccountPanel_DisplayDamageFeedback_IsPlayerClass_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -2939,8 +2745,6 @@ bool __fastcall CTFPlayer_IsPlayerClass(void* rcx, int iClass)
 
 bool __fastcall CTFPlayer_ShouldDraw(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayer_ShouldDraw, bool, rcx);
-
 	if (F::Spectate.HasTarget() && !I::EngineClient->IsHLTV())
 	{
 		auto pLocal = H::Entities.GetLocal();
@@ -2956,8 +2760,6 @@ bool __fastcall CTFPlayer_ShouldDraw(void* rcx)
 
 bool __fastcall CBasePlayer_ShouldDrawThisPlayer(void* rcx)
 {
-	UNLOAD_RETURN(CBasePlayer_ShouldDrawThisPlayer, bool, rcx);
-
 	//static const auto dwDesired = S::CTFWeaponBase_PostDataUpdate_ShouldDrawThisPlayer_Call();
 	static const auto dwUndesired = S::CBasePlayer_BuildFirstPersonMeathookTransformations_ShouldDrawThisPlayer_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
@@ -2983,8 +2785,6 @@ bool __fastcall CBasePlayer_ShouldDrawThisPlayer(void* rcx)
 
 bool __fastcall CBasePlayer_ShouldDrawLocalPlayer(void* rcx)
 {
-	UNLOAD_RETURN(CBasePlayer_ShouldDrawLocalPlayer, bool, rcx);
-
 	//static const auto dwDesired = S::CBaseCombatWeapon_CalcOverrideModelIndex_ShouldDrawLocalPlayer_Call();
 	//const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -3003,8 +2803,6 @@ bool __fastcall CBasePlayer_ShouldDrawLocalPlayer(void* rcx)
 
 bool __fastcall CBaseCombatWeapon_ShouldDraw(void* rcx)
 {
-	UNLOAD_RETURN(CBaseCombatWeapon_ShouldDraw, bool, rcx);
-
 	if (F::Spectate.HasTarget() && !I::EngineClient->IsHLTV())
 	{
 		auto pWeapon = H::Entities.GetWeapon();
@@ -3017,15 +2815,11 @@ bool __fastcall CBaseCombatWeapon_ShouldDraw(void* rcx)
 
 void __fastcall CViewRender_DrawViewModels(void* rcx, const CViewSetup& viewRender, bool drawViewmodel)
 {
-	UNLOAD_RETURN(CViewRender_DrawViewModels, void, rcx, viewRender, drawViewmodel);
-
 	CALL_ORIGINAL(CViewRender_DrawViewModels, void, rcx, viewRender, F::Spectate.GetTarget() != -1 ? false : drawViewmodel);
 }
 
 void __fastcall CTFPlayer_UpdateStepSound(void* rcx, void* psurface, const Vec3& vecOrigin, const Vec3& vecVelocity)
 {
-	UNLOAD_RETURN(CTFPlayer_UpdateStepSound, void, rcx, psurface, std::ref(vecOrigin), std::ref(vecVelocity));
-
 	static const auto dwDesired = S::CTFPlayer_FireEvent_UpdateStepSound_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -3037,30 +2831,22 @@ void __fastcall CTFPlayer_UpdateStepSound(void* rcx, void* psurface, const Vec3&
 
 int __fastcall CTFPlayerInventory_GetMaxItemCount(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayerInventory_GetMaxItemCount, int, rcx);
-
 	return Vars::Misc::Exploits::BackpackExpander.Value ? 4000 : CALL_ORIGINAL(CTFPlayerInventory_GetMaxItemCount, int, rcx);
 }
 
 void __fastcall CTFPlayerInventory_VerifyChangedLoadoutsAreValid(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayerInventory_VerifyChangedLoadoutsAreValid, void, rcx);
-
 	if (!Vars::Misc::Exploits::EquipRegionUnlock.Value)
 		CALL_ORIGINAL(CTFPlayerInventory_VerifyChangedLoadoutsAreValid, void, rcx);
 }
 
 uint32_t GenerateEquipRegionConflictMask(int iClass, int iUpToSlot, int iIgnoreSlot)
 {
-	UNLOAD_RETURN(GenerateEquipRegionConflictMask, uint32_t, iClass, iUpToSlot, iIgnoreSlot);
-
 	return Vars::Misc::Exploits::EquipRegionUnlock.Value ? 0 : CALL_ORIGINAL(GenerateEquipRegionConflictMask, uint32_t, iClass, iUpToSlot, iIgnoreSlot);
 }
 
 void* __fastcall CTFInventoryManager_GetItemInLoadoutForClass(void* rcx, int iClass, int iSlot, CSteamID* pID)
 {
-	UNLOAD_RETURN(CTFInventoryManager_GetItemInLoadoutForClass, void*, rcx, iClass, iSlot, pID);
-
 	static const auto dwDesired = S::CEquipSlotItemSelectionPanel_UpdateModelPanelsForSelection_GetItemInLoadoutForClass_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -3070,8 +2856,6 @@ void* __fastcall CTFInventoryManager_GetItemInLoadoutForClass(void* rcx, int iCl
 static int s_iPlayerIndexGetTeam;
 int __fastcall CTFPlayerPanel_GetTeam(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayerPanel_GetTeam, int, rcx);
-
 	static const auto dwDesired = S::CTFTeamStatusPlayerPanel_Update_GetTeam_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -3086,16 +2870,12 @@ int __fastcall CTFPlayerPanel_GetTeam(void* rcx)
 
 bool __fastcall CTFTeamStatusPlayerPanel_Update(void* rcx)
 {
-	UNLOAD_RETURN(CTFTeamStatusPlayerPanel_Update, bool, rcx);
-
 	s_iPlayerIndexGetTeam = *reinterpret_cast<int*>(uintptr_t(rcx) + 580);
 	return CALL_ORIGINAL(CTFTeamStatusPlayerPanel_Update, bool, rcx);
 }
 
 void __fastcall VGui_Panel_SetFgColor(void* rcx, Color_t color)
 {
-	UNLOAD_RETURN(VGui_Panel_SetFgColor, void, rcx, color);
-
 	if (!F::Groups.GroupsActive())
 		return CALL_ORIGINAL(VGui_Panel_SetFgColor, void, rcx, color);
 
@@ -3121,8 +2901,6 @@ void __fastcall VGui_Panel_SetFgColor(void* rcx, Color_t color)
 
 void __fastcall VGui_Panel_SetBgColor(void* rcx, Color_t color)
 {
-	UNLOAD_RETURN(VGui_Panel_SetBgColor, void, rcx, color);
-
 	static const auto dwDesired = S::CTFTeamStatusPlayerPanel_Update_SetBgColor_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -3144,8 +2922,6 @@ void __fastcall VGui_Panel_SetBgColor(void* rcx, Color_t color)
 
 bool __fastcall CTFPlayerShared_InCond(void* rcx, ETFCond nCond)
 {
-	UNLOAD_RETURN(CTFPlayerShared_InCond, bool, rcx, nCond);
-
 	const auto dwZoomPlayer = S::CTFPlayer_ShouldDraw_InCond_Call();
 	const auto dwZoomWearable = S::CTFWearable_ShouldDraw_InCond_Call();
 	const auto dwZoomHudScope = S::CHudScope_ShouldDraw_InCond_Call();
@@ -3192,8 +2968,6 @@ bool __fastcall CTFPlayerShared_InCond(void* rcx, ETFCond nCond)
 
 bool __fastcall CTFPlayerShared_IsCritBoosted(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayerShared_IsCritBoosted, bool, rcx);
-
 	static bool bPrevForceState = false;
 
 	const auto pLocal = H::Entities.GetLocal();
@@ -3240,8 +3014,6 @@ bool __fastcall CTFPlayerShared_IsCritBoosted(void* rcx)
 
 bool __fastcall CTFConditionList_InCond(void* rcx, ETFCond type)
 {
-	UNLOAD_RETURN(CTFConditionList_InCond, bool, rcx, type);
-
 	if (!Vars::CritHack::CritVisualEffects.Value)
 		return CALL_ORIGINAL(CTFConditionList_InCond, bool, rcx, type);
 
@@ -3276,8 +3048,6 @@ bool __fastcall CTFConditionList_InCond(void* rcx, ETFCond type)
 
 bool __fastcall CTFPlayerShared_IsPlayerDominated(void* rcx, int index)
 {
-	UNLOAD_RETURN(CTFPlayerShared_IsPlayerDominated, bool, rcx, index);
-
 	static const auto dwDesired = S::CTFClientScoreBoardDialog_UpdatePlayerList_IsPlayerDominated_Call();
 	static const auto dwJump = S::CTFClientScoreBoardDialog_UpdatePlayerList_Jump();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
@@ -3292,15 +3062,11 @@ bool __fastcall CTFPlayerShared_IsPlayerDominated(void* rcx, int index)
 
 bool __fastcall CTFPlayerShared_ShouldSuppressPrediction(void* rcx)
 {
-	UNLOAD_RETURN(CTFPlayerShared_ShouldSuppressPrediction, bool, rcx);
-
 	return false;
 }
 
 void __fastcall CTFRagdoll_CreateTFRagdoll(void* rcx)
 {
-	UNLOAD_RETURN(CTFRagdoll_CreateTFRagdoll, void, rcx);
-
 	if (Vars::Visuals::Removals::Ragdolls.Value)
 		return;
 
@@ -3322,8 +3088,6 @@ void __fastcall CTFRagdoll_CreateTFRagdoll(void* rcx)
 
 bool __fastcall CTFRocketLauncher_CheckReloadMisfire(void* rcx)
 {
-	UNLOAD_RETURN(CTFRocketLauncher_CheckReloadMisfire, bool, rcx);
-
 	auto pWeapon = reinterpret_cast<CTFWeaponBase*>(rcx);
 	if (!SDK::AttribHookValue(0, "can_overload", pWeapon))
 		return false;
@@ -3352,8 +3116,6 @@ bool __fastcall CTFRocketLauncher_CheckReloadMisfire(void* rcx)
 
 CBaseEntity* CTFRocketLauncher_FireProjectile(void* rcx, CTFPlayer* pPlayer)
 {
-	UNLOAD_RETURN(CTFRocketLauncher_FireProjectile, CBaseEntity*, rcx, pPlayer);
-
 	auto pWeapon = reinterpret_cast<CTFWeaponBase*>(rcx);
 	pWeapon->m_bRemoveable() = false;
 	return CALL_ORIGINAL(CTFRocketLauncher_FireProjectile, CBaseEntity*, rcx, pPlayer);
@@ -3364,8 +3126,6 @@ CBaseEntity* CTFRocketLauncher_FireProjectile(void* rcx, CTFPlayer* pPlayer)
 
 void __fastcall CTFBat_Wood_LaunchBall(void* rcx)
 {
-	UNLOAD_RETURN(CTFBat_Wood_LaunchBall, void, rcx);
-
 	auto pWeapon = reinterpret_cast<CTFWeaponBase*>(rcx);
 	pWeapon->CalcIsAttackCritical();
 
@@ -3375,8 +3135,6 @@ void __fastcall CTFBat_Wood_LaunchBall(void* rcx)
 
 void __fastcall CBaseEntity_ApplyAbsVelocityImpulse(CBaseEntity* rcx, const Vector& inVecImpulse)
 {
-	UNLOAD_RETURN(CBaseEntity_ApplyAbsVelocityImpulse, void, rcx, std::ref(inVecImpulse));
-
 	if (!rcx || !rcx->IsPlayer())
 		return CALL_ORIGINAL(CBaseEntity_ApplyAbsVelocityImpulse, void, rcx, std::ref(inVecImpulse));
 
@@ -3405,8 +3163,6 @@ void __fastcall CBaseEntity_ApplyAbsVelocityImpulse(CBaseEntity* rcx, const Vect
 static bool m_bScattergunJump = false;
 void __fastcall CTFScattergun_FireBullet(void* rcx, CTFPlayer* pPlayer)
 {
-	UNLOAD_RETURN(CTFScattergun_FireBullet, void, rcx, pPlayer);
-
 	const auto pLocal = H::Entities.GetLocal();
 	const auto pWeapon = reinterpret_cast<CBaseCombatWeapon*>(rcx);
 	if (!pPlayer || !pWeapon)
@@ -3463,8 +3219,6 @@ void __fastcall CTFScattergun_FireBullet(void* rcx, CTFPlayer* pPlayer)
 
 void __fastcall CTFGameMovement_SetGroundEntity(void* rcx, trace_t* pm)
 {
-	UNLOAD_RETURN(CTFGameMovement_SetGroundEntity, void, rcx, pm);
-
 	CALL_ORIGINAL(CTFGameMovement_SetGroundEntity, void, rcx, pm);
 
 	if (pm && pm->m_pEnt == H::Entities.GetLocal())
@@ -3474,8 +3228,6 @@ void __fastcall CTFGameMovement_SetGroundEntity(void* rcx, trace_t* pm)
 static int s_iCurrentSeed = -1;
 void __fastcall CTFWeaponBase_CalcIsAttackCritical(void* rcx)
 {
-	UNLOAD_RETURN(CTFWeaponBase_CalcIsAttackCritical, void, rcx);
-
 	auto pWeapon = reinterpret_cast<CTFWeaponBase*>(rcx);
 
 	const auto nPreviousWeaponMode = pWeapon->m_iWeaponMode();
@@ -3505,8 +3257,6 @@ void __fastcall CTFWeaponBase_CalcIsAttackCritical(void* rcx)
 
 bool __fastcall CTFWeaponBase_CanFireRandomCriticalShot(void* rcx, float flCritChance)
 { // not present on the client so it will always be a crit behind otherwise
-	UNLOAD_RETURN(CTFWeaponBase_CanFireRandomCriticalShot, bool, rcx, flCritChance);
-
 	int nRandomRangedCritDamage = F::CritHack.GetCritDamage();
 	int nTotalDamage = F::CritHack.GetRangedDamage();
 	if (!nTotalDamage)
@@ -3521,8 +3271,6 @@ bool __fastcall CTFWeaponBase_CanFireRandomCriticalShot(void* rcx, float flCritC
 
 const char* CTFWeaponBase_GetShootSound(void* rcx, int iIndex)
 {
-	UNLOAD_RETURN(CTFWeaponBase_GetShootSound, const char*, rcx, iIndex);
-
 	if (Vars::Misc::Sound::GiantWeaponSounds.Value)
 	{
 		auto pWeapon = H::Entities.GetWeapon();
@@ -3549,23 +3297,17 @@ const char* CTFWeaponBase_GetShootSound(void* rcx, int iIndex)
 
 void __fastcall CThirdPersonManager_Update(void* rcx)
 {
-	UNLOAD_RETURN(CThirdPersonManager_Update, void, rcx);
-
 	return;
 }
 
 void __fastcall CViewRender_DrawUnderwaterOverlay(void* rcx)
 {
-	UNLOAD_RETURN(CViewRender_DrawUnderwaterOverlay, void, rcx);
-
 	if (!Vars::Visuals::Removals::ScreenOverlays.Value || Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		CALL_ORIGINAL(CViewRender_DrawUnderwaterOverlay, void, rcx);
 }
 
 void __fastcall CViewRender_LevelInit(void* rcx)
 {
-	UNLOAD_RETURN(CViewRender_LevelInit, void, rcx);
-
 	F::Materials.ReloadMaterials();
 	F::Visuals.OverrideWorldTextures();
 
@@ -3584,16 +3326,12 @@ void __fastcall CViewRender_LevelInit(void* rcx)
 
 void __fastcall CViewRender_PerformScreenOverlay(void* rcx, int x, int y, int w, int h)
 {
-	UNLOAD_RETURN(CViewRender_PerformScreenOverlay, void, rcx, x, y, w, h);
-
 	if (!Vars::Visuals::Removals::ScreenOverlays.Value || Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		CALL_ORIGINAL(CViewRender_PerformScreenOverlay, void, rcx, x, y, w, h);
 }
 
 void __fastcall CViewRender_RenderView(void* rcx, const CViewSetup& view, ClearFlags_t nClearFlags, RenderViewInfo_t whatToDraw)
 {
-	UNLOAD_RETURN(CViewRender_RenderView, void, rcx, std::ref(view), nClearFlags, whatToDraw);
-
 	CALL_ORIGINAL(CViewRender_RenderView, void, rcx, std::ref(view), nClearFlags, whatToDraw);
 	if (G::Unload || Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return;
@@ -3603,8 +3341,6 @@ void __fastcall CViewRender_RenderView(void* rcx, const CViewSetup& view, ClearF
 
 void __fastcall CWeaponMedigun_PrimaryAttack(CWeaponMedigun* rcx)
 {
-	UNLOAD_RETURN(CWeaponMedigun_PrimaryAttack, void, rcx);
-
 	auto pOwner = rcx->m_hOwner()->As<CTFPlayer>();
 	if (!pOwner || !pOwner->m_pCurrentCommand())
 		return CALL_ORIGINAL(CWeaponMedigun_PrimaryAttack, void, rcx);
@@ -3700,8 +3436,6 @@ LONG __stdcall WndProc::Func(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 void __fastcall VGuiSurface_LockCursor(void* rcx)
 {
-	UNLOAD_RETURN(VGuiSurface_LockCursor, void, rcx);
-
 	if (F::Menu.m_bIsOpen)
 		return I::MatSystemSurface->UnlockCursor();
 
@@ -3710,8 +3444,6 @@ void __fastcall VGuiSurface_LockCursor(void* rcx)
 
 void __fastcall VGuiSurface_SetCursor(void* rcx, HCursor cursor)
 {
-	UNLOAD_RETURN(VGuiSurface_SetCursor, void, rcx, cursor);
-
 	if (F::Menu.m_bIsOpen)
 	{
 		switch (F::Render.Cursor)
@@ -3745,24 +3477,18 @@ void WndProc::Unload()
 
 void __fastcall DoEnginePostProcessing(int x, int y, int w, int h, bool bFlashlightIsOn, bool bPostVGui)
 {
-	UNLOAD_RETURN(DoEnginePostProcessing, void, x, y, w, h, bFlashlightIsOn, bPostVGui);
-	
 	if (!Vars::Visuals::Removals::PostProcessing.Value || Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		CALL_ORIGINAL(DoEnginePostProcessing, void, x, y, w, h, bFlashlightIsOn, bPostVGui);
 }
 
 void __fastcall DSP_Process(unsigned int idsp, int* pbfront, int* pbrear, int* pbcenter, int sampleCount)
 {
-	UNLOAD_RETURN(DSP_Process, void, idsp, pbfront, pbrear, pbcenter, sampleCount);
-
 	if (!Vars::Misc::Sound::RemoveDSP.Value)
 		CALL_ORIGINAL(DSP_Process, void, idsp, pbfront, pbrear, pbcenter, sampleCount);
 }
 
 void __fastcall FX_FireBullets(CTFWeaponBase* pWpn, int iPlayer, const Vec3& vecOrigin, const Vec3& vecAngles, int iWeapon, int iMode, int iSeed, float flSpread, float flDamage, bool bCritical)
 {
-	UNLOAD_RETURN(FX_FireBullets, void, pWpn, iPlayer, std::ref(vecOrigin), std::ref(vecAngles), iWeapon, iMode, iSeed, flSpread, flDamage, bCritical);
-
 	static const auto dwDesired = S::CTFWeaponBaseGun_FireBullet_FireBullets_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -3780,8 +3506,6 @@ MAKE_SIGNATURE(CBasePlayer_ProcessUsercmds, "server.dll", "40 53 55 56 57 41 54 
 
 void __fastcall FX_FireBullets_Server(CTFWeaponBase* pWpn, int iPlayer, const Vec3& vecOrigin, const Vec3& vecAngles, int iWeapon, int iMode, int iSeed, float flSpread, float flDamage, bool bCritical)
 {
-	UNLOAD_RETURN(FX_FireBullets_Server, void, pWpn, iPlayer, std::ref(vecOrigin), std::ref(vecAngles), iWeapon, iMode, iSeed, flSpread, flDamage, bCritical);
-
 	if (Vars::Aimbot::General::NoSpread.Value)
 		SDK::Output("FX_FireBullets", std::format("{}", iSeed).c_str(), { 0, 255, 0 });
 	return CALL_ORIGINAL(FX_FireBullets_Server, void, pWpn, iPlayer, std::ref(vecOrigin), std::ref(vecAngles), iWeapon, iMode, iSeed, flSpread, flDamage, bCritical);
@@ -3789,8 +3513,6 @@ void __fastcall FX_FireBullets_Server(CTFWeaponBase* pWpn, int iPlayer, const Ve
 
 void __fastcall CBasePlayer_ProcessUsercmds(void* rcx, CUserCmd* cmds, int numcmds, int totalcmds, int dropped_packets, bool paused)
 {
-	UNLOAD_RETURN(CBasePlayer_ProcessUsercmds, void, rcx, cmds, numcmds, totalcmds, dropped_packets, paused);
-
 	bool bInAttack = false;
 	for (int i = totalcmds - 1; i >= 0; i--)
 	{
@@ -3812,8 +3534,6 @@ void __fastcall CBasePlayer_ProcessUsercmds(void* rcx, CUserCmd* cmds, int numcm
 
 float __fastcall GetClientInterpAmount()
 {
-	UNLOAD_RETURN(GetClientInterpAmount, float);
-
 	if (Vars::Visuals::Removals::Lerp.Value && !Vars::Visuals::Removals::Interpolation.Value)
 		return CALL_ORIGINAL(GetClientInterpAmount, float);
 
@@ -3841,8 +3561,6 @@ static std::optional<bool> s_bStartSolid = std::nullopt;
 
 void __fastcall IEngineTrace_TraceRay(void* rcx, const Ray_t& ray, unsigned int fMask, ITraceFilter* pTraceFilter, trace_t* pTrace)
 {
-	UNLOAD_RETURN(IEngineTrace_TraceRay, void, rcx, std::ref(ray), fMask, pTraceFilter, pTrace);
-
 	s_bNoSkip = fMask & CONTENTS_NOSKIP;
 
 	CALL_ORIGINAL(IEngineTrace_TraceRay, void, rcx, std::ref(ray), fMask, pTraceFilter, pTrace);
@@ -3868,8 +3586,6 @@ void __fastcall IEngineTrace_TraceRay(void* rcx, const Ray_t& ray, unsigned int 
 
 void __fastcall CM_BoxTrace(const Ray_t& ray, int headnode, int brushmask, bool computeEndpt, trace_t& tr)
 {
-	UNLOAD_RETURN(CM_BoxTrace, void, std::ref(ray), headnode, brushmask, computeEndpt, std::ref(tr));
-
 	CALL_ORIGINAL(CM_BoxTrace, void, std::ref(ray), headnode, brushmask, computeEndpt, std::ref(tr));
 
 	if (s_bStartSolid)
@@ -3880,8 +3596,6 @@ void __fastcall CM_BoxTrace(const Ray_t& ray, int headnode, int brushmask, bool 
 
 void __fastcall CM_ClipBoxToBrush_True(TraceInfo_t* pTraceInfo, void* brush)
 {
-	UNLOAD_RETURN(CM_ClipBoxToBrush_True, void, pTraceInfo, brush);
-
 	if (s_bStartSolid)
 		pTraceInfo->m_trace.startsolid = s_bStartSolid.value(), s_bStartSolid = std::nullopt;
 
@@ -3897,8 +3611,6 @@ void __fastcall CM_ClipBoxToBrush_True(TraceInfo_t* pTraceInfo, void* brush)
 
 void __fastcall CM_ClipBoxToBrush_False(TraceInfo_t* pTraceInfo, void* brush)
 {
-	UNLOAD_RETURN(CM_ClipBoxToBrush_False, void, pTraceInfo, brush);
-
 	if (s_bStartSolid)
 		pTraceInfo->m_trace.startsolid = s_bStartSolid.value(), s_bStartSolid = std::nullopt;
 
@@ -3914,8 +3626,6 @@ void __fastcall CM_ClipBoxToBrush_False(TraceInfo_t* pTraceInfo, void* brush)
 
 bool __fastcall CEngineTrace_ClipTraceToTrace(void* rcx, trace_t& clipTrace, trace_t* pFinalTrace)
 {
-	UNLOAD_RETURN(CEngineTrace_ClipTraceToTrace, bool, rcx, std::ref(clipTrace), pFinalTrace);
-
 	if (s_bStartSolid)
 		pFinalTrace->startsolid = s_bStartSolid.value(), s_bStartSolid = std::nullopt;
 	if (s_bNoSkip && (!clipTrace.fraction || clipTrace.fraction < pFinalTrace->fractionleftsolid))
@@ -3926,7 +3636,8 @@ bool __fastcall CEngineTrace_ClipTraceToTrace(void* rcx, trace_t& clipTrace, tra
 
 void __fastcall IEngineVGui_Paint(void* rcx, int iMode)
 {
-	UNLOAD_RETURN(IEngineVGui_Paint, void, rcx, iMode);
+	if(G::Unload)
+		return CALL_ORIGINAL(IEngineVGui_Paint, void, rcx, iMode);
 
 	if (iMode & PAINT_INGAMEPANELS && (!(Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())))
 	{
@@ -3980,8 +3691,6 @@ void __fastcall IEngineVGui_Paint(void* rcx, int iMode)
 
 ITexture* IMaterialSystem_FindTexture(void* rcx, char const* pTextureName, const char* pTextureGroupName, bool complain, int nAdditionalCreationFlags)
 {
-	UNLOAD_RETURN(IMaterialSystem_FindTexture, ITexture*, rcx, pTextureName, pTextureGroupName, complain, nAdditionalCreationFlags);
-
 	auto pReturn = CALL_ORIGINAL(IMaterialSystem_FindTexture, ITexture*, rcx, pTextureName, pTextureGroupName, complain, nAdditionalCreationFlags);
 
 	if (FNV1A::Hash32(Vars::Visuals::World::WorldTexture.Value.c_str()) == FNV1A::Hash32Const("Flat"))
@@ -4004,8 +3713,6 @@ ITexture* IMaterialSystem_FindTexture(void* rcx, char const* pTextureName, const
 
 void __fastcall IMatSystemSurface_OnScreenSizeChanged(void* rcx, int nOldWidth, int nOldHeight)
 {
-	UNLOAD_RETURN(IMatSystemSurface_OnScreenSizeChanged, void, rcx, nOldWidth, nOldHeight);
-
 	CALL_ORIGINAL(IMatSystemSurface_OnScreenSizeChanged, void, rcx, nOldWidth, nOldHeight);
 
 	H::Fonts.ReloadFonts();
@@ -4014,8 +3721,6 @@ void __fastcall IMatSystemSurface_OnScreenSizeChanged(void* rcx, int nOldWidth, 
 
 void __fastcall IPanel_PaintTraverse(void* rcx, VPANEL vguiPanel, bool forceRepaint, bool allowForce)
 {
-	UNLOAD_RETURN(IPanel_PaintTraverse, void, rcx, vguiPanel, forceRepaint, allowForce);
-
 	if (!Vars::Visuals::UI::StreamerMode.Value)
 		return CALL_ORIGINAL(IPanel_PaintTraverse, void, rcx, vguiPanel, forceRepaint, allowForce);
 
@@ -4034,8 +3739,6 @@ void __fastcall IPanel_PaintTraverse(void* rcx, VPANEL vguiPanel, bool forceRepa
 
 const char* __fastcall ISteamFriends_GetFriendPersonaName(void* rcx, CSteamID steamIDFriend)
 {
-	UNLOAD_RETURN(ISteamFriends_GetFriendPersonaName, const char*, rcx, steamIDFriend);
-
 	static const auto dwDesired = S::GetPlayerNameForSteamID_GetFriendPersonaName_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -4063,8 +3766,6 @@ const char* __fastcall ISteamFriends_GetFriendPersonaName(void* rcx, CSteamID st
 
 int __fastcall ISteamNetworkingUtils_GetPingToDataCenter(void* rcx, SteamNetworkingPOPID popID, SteamNetworkingPOPID* pViaRelayPoP)
 {
-	UNLOAD_RETURN(ISteamNetworkingUtils_GetPingToDataCenter, int, rcx, popID, pViaRelayPoP);
-
 	int iReturn = CALL_ORIGINAL(ISteamNetworkingUtils_GetPingToDataCenter, int, rcx, popID, pViaRelayPoP);
 	if (!Vars::Misc::Queueing::ForceRegions.Value || iReturn < 0)
 		return iReturn;
@@ -4079,8 +3780,6 @@ int __fastcall ISteamNetworkingUtils_GetPingToDataCenter(void* rcx, SteamNetwork
 
 void __fastcall CTFPartyClient_RequestQueueForMatch(void* rcx, int eMatchGroup)
 {
-	UNLOAD_RETURN(CTFPartyClient_RequestQueueForMatch, void, rcx, eMatchGroup);
-
 	I::TFGCClientSystem->SetPendingPingRefresh(true);
 	I::TFGCClientSystem->PingThink();
 
@@ -4134,8 +3833,6 @@ int __fastcall CBaseAnimating_DrawModel(void* rcx, int flags)
 
 int __fastcall CBaseAnimating_InternalDrawModel(void* rcx, int flags)
 {
-	UNLOAD_RETURN(CBaseAnimating_InternalDrawModel, int, rcx, flags);
-
 	if (!s_bDrawingViewmodel || !(flags & STUDIO_RENDER))
 		return CALL_ORIGINAL(CBaseAnimating_InternalDrawModel, int, rcx, flags);
 
@@ -4153,8 +3850,6 @@ int __fastcall CBaseAnimating_InternalDrawModel(void* rcx, int flags)
 
 void __fastcall IVModelRender_ForcedMaterialOverride(IVModelRender* rcx, IMaterial* mat, OverrideType_t type)
 {
-	UNLOAD_RETURN(IVModelRender_ForcedMaterialOverride, void, rcx, mat, type);
-
 	if (F::Chams.m_bRendering || F::Glow.m_bRendering)
 		return;
 
@@ -4163,8 +3858,6 @@ void __fastcall IVModelRender_ForcedMaterialOverride(IVModelRender* rcx, IMateri
 
 void __fastcall KeyValues_SetInt(void* rcx, const char* keyName, int value)
 {
-	UNLOAD_RETURN(KeyValues_SetInt, void, rcx, keyName, value);
-
 	static const auto dwDesired = S::CTFClientScoreBoardDialog_UpdatePlayerList_SetInt_Call();
 	static const auto dwJump = S::CTFClientScoreBoardDialog_UpdatePlayerList_Jump();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
@@ -4177,8 +3870,6 @@ void __fastcall KeyValues_SetInt(void* rcx, const char* keyName, int value)
 
 int __fastcall NotificationQueue_Add(CEconNotification* pNotification)
 {
-	UNLOAD_RETURN(NotificationQueue_Add, int, pNotification);
-
 	if (FNV1A::Hash32(pNotification->m_pText) == FNV1A::Hash32Const("TF_HasNewItems") && Vars::Misc::Automation::AcceptItemDrops.Value)
 	{
 		pNotification->Accept();
@@ -4193,8 +3884,6 @@ int __fastcall NotificationQueue_Add(CEconNotification* pNotification)
 
 void __fastcall R_ComputeLightingOrigin(IClientRenderable* pRenderable, studiohdr_t* pStudioHdr, const matrix3x4& matrix, Vector& center)
 {
-	UNLOAD_RETURN(R_ComputeLightingOrigin, void, pRenderable, pStudioHdr, std::ref(matrix), std::ref(center));
-
 	if (!I::EngineClient->IsInGame() || !I::EngineClient->IsConnected() || !H::Entities.GetLocal())
 		return CALL_ORIGINAL(R_ComputeLightingOrigin, void, pRenderable, pStudioHdr, std::ref(matrix), std::ref(center));
 
@@ -4217,8 +3906,6 @@ void __fastcall R_ComputeLightingOrigin(IClientRenderable* pRenderable, studiohd
 
 void __fastcall R_DrawSkyBox(float zFar, int nDrawFlags)
 {
-	UNLOAD_RETURN(R_DrawSkyBox, void, zFar, nDrawFlags);
-
 	if (FNV1A::Hash32(Vars::Visuals::World::SkyboxChanger.Value.c_str()) == FNV1A::Hash32Const("Off") || Vars::Visuals::UI::CleanScreenshots.Value && I::EngineClient->IsTakingScreenshot())
 		return CALL_ORIGINAL(R_DrawSkyBox, void, zFar, nDrawFlags);
 
@@ -4231,8 +3918,6 @@ void __fastcall R_DrawSkyBox(float zFar, int nDrawFlags)
 
 void __fastcall RecvProxy_SimulationTime(const CRecvProxyData* pData, void* pStruct, void* pOut)
 {
-	UNLOAD_RETURN(RecvProxy_SimulationTime, void, pData, pStruct, pOut);
-
 	auto pEntity = reinterpret_cast<CBaseEntity*>(pStruct);
 	if (!pEntity || !pEntity->IsPlayer() || pEntity->entindex() == I::EngineClient->GetLocalPlayer())
 		return CALL_ORIGINAL(RecvProxy_SimulationTime, void, pData, pStruct, pOut);
@@ -4254,8 +3939,6 @@ void __fastcall RecvProxy_SimulationTime(const CRecvProxyData* pData, void* pStr
 
 bool __fastcall TF_IsHolidayActive(int eHoliday)
 {
-	UNLOAD_RETURN(TF_IsHolidayActive, bool, eHoliday);
-
 	static const auto dwDesired = S::CTFPlayer_FireEvent_IsHolidayActive_Call();
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 
@@ -4267,8 +3950,6 @@ static uint32_t s_uAccountID;
 static const char* s_sPlayerName;
 bool __fastcall CPlayerResource_IsFakePlayer(void* rcx, int index)
 {
-	UNLOAD_RETURN(CPlayerResource_IsFakePlayer, bool, rcx, index);
-
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwDesired = S::CTFClientScoreBoardDialog_OnScoreBoardMouseRightRelease_IsFakePlayer_Call();
 
@@ -4280,8 +3961,6 @@ bool __fastcall CPlayerResource_IsFakePlayer(void* rcx, int index)
 
 void* __fastcall VGuiMenuBuilder_AddMenuItem(void* rcx, const char* pszButtonText, const char* pszCommand, const char* pszCategoryName)
 {
-	UNLOAD_RETURN(VGuiMenuBuilder_AddMenuItem, void*, rcx, pszButtonText, pszCommand, pszCategoryName);
-
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwDesired1 = S::CTFClientScoreBoardDialog_OnScoreBoardMouseRightRelease_AddMenuItem_CallProfile();
 	const auto dwDesired2 = S::CTFClientScoreBoardDialog_OnScoreBoardMouseRightRelease_AddMenuItem_CallSpectate();
@@ -4322,8 +4001,6 @@ void* __fastcall VGuiMenuBuilder_AddMenuItem(void* rcx, const char* pszButtonTex
 
 void __fastcall CTFClientScoreBoardDialog_OnCommand(void* rcx, const char* command)
 {
-	UNLOAD_RETURN(CTFClientScoreBoardDialog_OnCommand, void, rcx, command);
-
 	if (!Vars::Visuals::UI::ScoreboardUtility.Value || !command)
 		return CALL_ORIGINAL(CTFClientScoreBoardDialog_OnCommand, void, rcx, command);
 

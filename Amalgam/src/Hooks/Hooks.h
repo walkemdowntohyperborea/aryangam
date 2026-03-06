@@ -215,4 +215,3 @@ public:
 ADD_FEATURE_CUSTOM(CHooks, Hooks, U);
 
 #define CALL_ORIGINAL(hook, type, ...) U::Hooks.m_##hook##.fastcall<type>(__VA_ARGS__)
-#define UNLOAD_RETURN(hook, type, ...) if (G::Unload) return U::Hooks.m_##hook##.fastcall<type>(__VA_ARGS__)
