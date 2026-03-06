@@ -582,8 +582,12 @@ void CTicks::Draw(CTFPlayer* pLocal)
 	{
 		int iAntiAimTicks = F::AntiAim.YawOn() ? F::AntiAim.AntiAimTicks() : 0;
 
-		int iTicks = std::clamp(m_iShiftedTicks + std::max(I::ClientState->chokedcommands - iAntiAimTicks, 0), 0, m_iMaxUsrCmdProcessTicks);
-		int iMax = std::max(m_iMaxUsrCmdProcessTicks - iAntiAimTicks, 0);
+		int iTicks;
+		if(Vars::Menu::SyncedTicks.Value)
+			iTicks = std::clamp(m_iShiftedTicks + std::max(I::ClientState->chokedcommands - iAntiAimTicks, 0), 0, m_iMaxUsrCmdProcessTicks);
+		else
+			iTicks = std::clamp(m_iShiftedTicks, 0, m_iMaxUsrCmdProcessTicks);
+		int iMax = std::clamp(Vars::Doubletap::RechargeLimit.Value - iAntiAimTicks, 0, m_iMaxUsrCmdProcessTicks);
 
 		float flRatio = float(iTicks) / float(iMax);
 
