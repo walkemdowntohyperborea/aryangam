@@ -824,8 +824,8 @@ static inline void ApplyModulation(Color_t tColor, bool bSky = false)
 		}
 		else
 		{
-			if (!sGroup.starts_with(TEXTURE_GROUP_WORLD)
-				|| sName.find("sky") == std::string_view::npos)
+			if (!sGroup.starts_with(TEXTURE_GROUP_SKYBOX)
+				&& sName.find("sky") == std::string_view::npos)
 				continue;
 		}
 

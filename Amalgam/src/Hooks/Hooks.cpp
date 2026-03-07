@@ -2815,7 +2815,7 @@ bool __fastcall CBaseCombatWeapon_ShouldDraw(void* rcx)
 
 void __fastcall CViewRender_DrawViewModels(void* rcx, const CViewSetup& viewRender, bool drawViewmodel)
 {
-	CALL_ORIGINAL(CViewRender_DrawViewModels, void, rcx, viewRender, F::Spectate.GetTarget() != -1 ? false : drawViewmodel);
+	CALL_ORIGINAL(CViewRender_DrawViewModels, void, rcx, std::ref(viewRender), F::Spectate.GetTarget() != -1 ? false : drawViewmodel);
 }
 
 void __fastcall CTFPlayer_UpdateStepSound(void* rcx, void* psurface, const Vec3& vecOrigin, const Vec3& vecVelocity)
@@ -3561,6 +3561,9 @@ static std::optional<bool> s_bStartSolid = std::nullopt;
 
 void __fastcall IEngineTrace_TraceRay(void* rcx, const Ray_t& ray, unsigned int fMask, ITraceFilter* pTraceFilter, trace_t* pTrace)
 {
+	if(G::Unload)
+		return CALL_ORIGINAL(IEngineTrace_TraceRay, void, rcx, std::ref(ray), fMask, pTraceFilter, pTrace);
+
 	s_bNoSkip = fMask & CONTENTS_NOSKIP;
 
 	CALL_ORIGINAL(IEngineTrace_TraceRay, void, rcx, std::ref(ray), fMask, pTraceFilter, pTrace);

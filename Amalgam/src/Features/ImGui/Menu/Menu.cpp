@@ -1777,16 +1777,6 @@ void CMenu::MenuLogs(int iTab)
 									TextColored(F::Render.Inactive.Value, "Community Banned");
 							}
 
-							if (mParties.contains(tPlayer.m_iParty))
-							{
-								Divider(H::Draw.Scale(), H::Draw.Scale(1), 0);
-
-								TextColored(F::Render.Inactive.Value, "Partied:");
-								for (auto& pPlayer2 : mParties[tPlayer.m_iParty])
-									TextColored(F::Render.Inactive.Value, pPlayer2->m_sName.c_str());
-							}
-
-
 							if (tPlayer.m_iLevel != -2)
 							{
 								Divider(H::Draw.Scale(), H::Draw.Scale(1), 0);

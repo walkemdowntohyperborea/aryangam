@@ -658,7 +658,7 @@ void CTicks::Draw(CTFPlayer* pLocal)
 			break;
 		}
 		case Vars::Menu::TickDisplayStyleEnum::Text:
-			H::Draw.StringOutlined(fFont, iPosX, iPosY, Vars::Menu::Theme::Active.Value, Vars::Menu::Theme::Background.Value, ALIGN_CENTER, std::format("Ticks {} / {}", iTicks, m_iMaxShift).c_str());
+			H::Draw.StringOutlined(fFont, dtPos.x, dtPos.y, Vars::Menu::Theme::Active.Value, Vars::Menu::Theme::Background.Value, ALIGN_CENTER, std::format("Ticks {} / {}", iTicks, m_iMaxShift).c_str());
 			break;
 		case Vars::Menu::TickDisplayStyleEnum::SEOwnedDE:
 		{
@@ -918,5 +918,5 @@ void CTicks::Draw(CTFPlayer* pLocal)
 		}
 	}
 	else
-		H::Draw.StringOutlined(fFont, dtPos.x, dtPos.y + 2, Vars::Menu::Theme::Active.Value, Vars::Menu::Theme::Background.Value, ALIGN_TOP, std::format("Speedhack x{}", Vars::Speedhack::Amount.Value).c_str());
+		H::Draw.StringOutlined(fFont, dtPos.x, dtPos.y + 2, Vars::Menu::Theme::Active.Value, Vars::Menu::Theme::Background.Value, ALIGN_CENTER, std::format("Speedhack x{}", Vars::Speedhack::Amount.Value).c_str());
 }
