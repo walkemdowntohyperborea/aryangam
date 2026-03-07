@@ -7,7 +7,7 @@
 
 namespace MoveSimConstants
 {
-	constexpr float HULL_PADDING = 0.0625f;
+	constexpr float HULL_PADDING = PLAYER_ORIGIN_COMPRESSION / 2;
 	constexpr float MAX_MOVEMENT_SPEED = 450.f;
 	constexpr float MAX_RECORD_GAP = 0.35f;
 	constexpr float WEIGHT_EXP_DECAY = 1.5f;
