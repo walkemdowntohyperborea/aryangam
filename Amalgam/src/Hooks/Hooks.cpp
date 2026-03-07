@@ -2253,7 +2253,7 @@ Vec3* __fastcall CBasePlayer_EyePosition(void* rcx, void* rdx)
 	return CALL_ORIGINAL(CBasePlayer_EyePosition, Vec3*, rcx, rdx);
 }
 
-Vec3* __fastcall CTFPlayer_EyeAngles(void* rcx)
+QAngle* __fastcall CTFPlayer_EyeAngles(void* rcx)
 {
 	const auto dwRetAddr = uintptr_t(_ReturnAddress());
 	const auto dwDesired = S::CSniperDot_GetRenderingPositions_EyeAngles_Call();
@@ -2261,7 +2261,7 @@ Vec3* __fastcall CTFPlayer_EyeAngles(void* rcx)
 	if (dwRetAddr == dwDesired)
 		return &s_vEyeAngles;
 
-	return CALL_ORIGINAL(CTFPlayer_EyeAngles, Vec3*, rcx);
+	return CALL_ORIGINAL(CTFPlayer_EyeAngles, QAngle*, rcx);
 }
 
 void __fastcall CSoundEmitterSystem_EmitSound(void* rcx, IRecipientFilter& filter, int entindex, const EmitSound_t& ep)
@@ -4182,8 +4182,22 @@ bool CHooks::Initialize()
 	INIT_HOOK(CViewRender_RenderView, U::Memory.GetVirtual(I::ViewRender, 6));
 	INIT_HOOK(CWeaponMedigun_PrimaryAttack, S::CWeaponMedigun_PrimaryAttack());
 	WndProc::Initialize();
-	INIT_HOOK(Direct3DDevice9_Present, U::Memory.GetVirtual(I::DirectXDevice, 17));
-	INIT_HOOK(Direct3DDevice9_Reset, U::Memory.GetVirtual(I::DirectXDevice, 16));
+
+	// vulkan support
+	if (GetModuleHandleA("dxvk_d3d9.dll"))
+	{	// have to be defined here or else they will try to initialize on normal tf2
+		CSignature Direct3DDevice9_Present_Vulkan("dxvk_d3d9.dll", "48 83 EC ? 48 8B 44 24 ? 48 8B 89", 0x0, "Direct3DDevice9_Present_Vulkan");
+		CSignature Direct3DDevice9_Reset_Vulkan("dxvk_d3d9.dll", "41 55 41 54 55 57 56 53 48 81 EC ? ? ? ? 45 31 E4 8B 81", 0x0, "Direct3DDevice9_Reset_Vulkan");
+
+		INIT_HOOK(Direct3DDevice9_Present, Direct3DDevice9_Present_Vulkan());
+		INIT_HOOK(Direct3DDevice9_Reset, Direct3DDevice9_Reset_Vulkan());
+	}
+	else
+	{
+		INIT_HOOK(Direct3DDevice9_Present, U::Memory.GetVirtual(I::DirectXDevice, 17));
+		INIT_HOOK(Direct3DDevice9_Reset, U::Memory.GetVirtual(I::DirectXDevice, 16));
+	}
+	
 	INIT_HOOK(VGuiSurface_LockCursor, U::Memory.GetVirtual(I::MatSystemSurface, 62));
 	INIT_HOOK(VGuiSurface_SetCursor, U::Memory.GetVirtual(I::MatSystemSurface, 51));
 	INIT_HOOK(DoEnginePostProcessing, S::DoEnginePostProcessing());
